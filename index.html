@@ -691,11 +691,13 @@
   <canvas id="flyashChart"></canvas>
 </div>
 
-<div class="panel-footer">
+<div class="panel-footer" style="justify-content: space-between;">
   <span>
-    📊 Data dummy 14 hari · Produksi (ton/hari) & Pemanfaatan (%).
+    📊 Data dummy 14 hari · Produksi & Pemanfaatan.
   </span>
-  <span>Range contoh: 14 hari terakhir</span>
+  <div>
+    <button class="btn" id="deleteLastBtn">Hapus Data Terakhir</button>
+  </div>
 </div>
         </section>
 
@@ -962,6 +964,26 @@
       inputForm.reset();
       hideInputPanel();
     });
+// ====== HAPUS DATA TERAKHIR ======
+const deleteLastBtn = document.getElementById('deleteLastBtn');
+
+deleteLastBtn.addEventListener('click', () => {
+  if (labels.length === 0) {
+    alert("Tidak ada data untuk dihapus.");
+    return;
+  }
+
+  // hapus data terakhir
+  labels.pop();
+  produksiData.pop();
+  pemanfaatanData.pop();
+
+  // update grafik
+  flyashChart.data.labels = labels;
+  flyashChart.data.datasets[0].data = produksiData;
+  flyashChart.data.datasets[1].data = pemanfaatanData;
+  flyashChart.update();
+});
   </script>
 </html>
   </script>
@@ -970,4 +992,5 @@
 </body>
 
 </html>
+
 

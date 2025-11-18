@@ -403,7 +403,55 @@
       gap: 0.5rem;
       flex-wrap: wrap;
     }
+/* INPUT PANEL */
+.input-panel {
+  margin-bottom: 1rem;
+  display: none; /* default disembunyikan */
+}
 
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.input-field label {
+  color: var(--muted);
+}
+
+.input-field input {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  padding: 0.35rem 0.5rem;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+@media (max-width: 800px) {
+  .input-grid {
+    grid-template-columns: 1fr;
+  }
+}
+    
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .app {
@@ -520,10 +568,57 @@
         </div>
         <div class="header-actions">
           <button class="btn">Hari ini: 18 Nov 2025</button>
-          <button class="btn btn-primary">+ Input Data Manual</button>
+          <button class="btn btn-primary" id="openInputBtn">+ Input Data Manual</button>
         </div>
       </header>
+<!-- INPUT DATA MANUAL PANEL -->
+      <section class="panel input-panel" id="inputPanel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Input Data Manual</div>
+            <div class="panel-subtitle">
+              Tambahkan data produksi & pemanfaatan untuk dimasukkan ke grafik.
+            </div>
+          </div>
+        </div>
 
+        <form id="inputForm">
+          <div class="input-grid">
+            <div class="input-field">
+              <label for="inputDate">Tanggal</label>
+              <input type="date" id="inputDate" required />
+            </div>
+
+            <div class="input-field">
+              <label for="inputProduksi">Produksi (ton/hari)</label>
+              <input
+                type="number"
+                id="inputProduksi"
+                min="0"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="input-field">
+              <label for="inputPemanfaatan">Pemanfaatan (%)</label>
+              <input
+                type="number"
+                id="inputPemanfaatan"
+                min="0"
+                max="100"
+                step="0.1"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-actions">
+            <button type="button" class="btn" id="cancelInputBtn">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan ke Grafik</button>
+          </div>
+        </form>
+      </section>
       <!-- SUMMARY CARDS -->
       <section class="grid-cards">
         <article class="card">
@@ -689,20 +784,20 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Script untuk grafik Fly Ash -->
+  <!-- Script untuk grafik + input data -->
   <script>
-    // Data dummy 14 hari (bisa kamu ubah kapan saja)
-    const labels = [
+    // Data dummy 14 hari (bisa diubah kapan saja)
+    let labels = [
       '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
       '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
     ];
 
-    const produksiData = [
+    let produksiData = [
       880, 895, 910, 905, 920, 930, 915,
       940, 955, 960, 945, 920, 905, 935
     ];
 
-    const pemanfaatanData = [
+    let pemanfaatanData = [
       72, 73, 74, 75, 76, 77, 76,
       78, 79, 80, 79, 78, 77, 78
     ];
@@ -738,7 +833,7 @@
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            display: false   // kita sudah punya legend di header panel
+            display: false // legend sudah di header panel
           },
           tooltip: {
             mode: 'index',
@@ -777,9 +872,102 @@
         }
       }
     });
+
+    // ====== LOGIKA INPUT DATA MANUAL ======
+
+    const openInputBtn = document.getElementById('openInputBtn');
+    const inputPanel = document.getElementById('inputPanel');
+    const inputForm = document.getElementById('inputForm');
+    const cancelInputBtn = document.getElementById('cancelInputBtn');
+    const inputDate = document.getElementById('inputDate');
+    const inputProduksi = document.getElementById('inputProduksi');
+    const inputPemanfaatan = document.getElementById('inputPemanfaatan');
+
+    function showInputPanel() {
+      inputPanel.style.display = 'block';
+      // set default tanggal = hari ini
+      if (!inputDate.value) {
+        const today = new Date();
+        const y = today.getFullYear();
+        const m = String(today.getMonth() + 1).padStart(2, '0');
+        const d = String(today.getDate()).padStart(2, '0');
+        inputDate.value = `${y}-${m}-${d}`;
+      }
+      inputProduksi.focus();
+    }
+
+    function hideInputPanel() {
+      inputPanel.style.display = 'none';
+    }
+
+    function formatLabelFromDate(isoDate) {
+      if (!isoDate) return 'Custom';
+      const d = new Date(isoDate);
+      if (isNaN(d.getTime())) return isoDate;
+      const day = String(d.getDate()).padStart(2, '0');
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${day} ${months[d.getMonth()]}`;
+    }
+
+    function addDataPoint(label, produksi, pemanfaatan) {
+      labels.push(label);
+      produksiData.push(produksi);
+      pemanfaatanData.push(pemanfaatan);
+
+      // Batasi hanya 14 data terakhir agar grafik tetap rapi
+      const maxPoints = 14;
+      if (labels.length > maxPoints) {
+        labels = labels.slice(-maxPoints);
+        produksiData = produksiData.slice(-maxPoints);
+        pemanfaatanData = pemanfaatanData.slice(-maxPoints);
+      }
+
+      flyashChart.data.labels = labels;
+      flyashChart.data.datasets[0].data = produksiData;
+      flyashChart.data.datasets[1].data = pemanfaatanData;
+      flyashChart.update();
+    }
+
+    // event tombol buka
+    openInputBtn.addEventListener('click', () => {
+      if (inputPanel.style.display === 'block') {
+        hideInputPanel();
+      } else {
+        showInputPanel();
+      }
+    });
+
+    // event tombol batal
+    cancelInputBtn.addEventListener('click', () => {
+      hideInputPanel();
+    });
+
+    // submit form
+    inputForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const tanggal = inputDate.value;
+      const produksi = parseFloat(inputProduksi.value);
+      const pemanfaatan = parseFloat(inputPemanfaatan.value);
+
+      if (isNaN(produksi) || isNaN(pemanfaatan)) {
+        alert('Mohon isi angka yang valid untuk produksi dan pemanfaatan.');
+        return;
+      }
+
+      const label = formatLabelFromDate(tanggal);
+      addDataPoint(label, produksi, pemanfaatan);
+
+      // reset & tutup panel
+      inputForm.reset();
+      hideInputPanel();
+    });
+  </script>
+</html>
   </script>
 </body>
 </html>
 </body>
 
 </html>
+

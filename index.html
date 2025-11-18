@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fly Ash Management Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-elevated: #111827;
+      --card: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.12);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --danger: #f97373;
+      --warning: #facc15;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: rgba(15, 23, 42, 0.95);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #bbf7d0, #22c55e);
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #020617;
+      font-size: 0.9rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .nav {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .nav li {
+      margin-bottom: 0.25rem;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 0.5rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .nav a span.icon {
+      width: 18px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .nav a:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .nav a.active {
+      background: linear-gradient(135deg, #22c55e33, #22c55e11);
+      border-color: #22c55e55;
+      color: #bbf7d0;
+    }
+
+    .sidebar-footer {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2rem;
+      opacity: 0.75;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      padding: 1.5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    header-title {
+      display: block;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #bbf7d0;
+      margin-bottom: 0.4rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-color: #22c55e;
+      color: #022c22;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    /* SUMMARY CARDS */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chip-positive {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #bbf7d0;
+    }
+
+    .chip-warning {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(250, 204, 21, 0.1);
+      color: #facc15;
+    }
+
+    .chip-danger {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(248, 113, 113, 0.12);
+      color: #fecaca;
+    }
+
+    /* LOWER GRID */
+    .grid-lower {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 1rem;
+      padding: 1rem 1rem 0.8rem;
+      border: 1px solid rgba(30, 64, 175, 0.45);
+      box-shadow:
+        0 18px 50px rgba(15, 23, 42, 0.8),
+        0 0 0 1px rgba(15, 23, 42, 0.8) inset;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.7rem;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .panel-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .legend {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .legend-dot2 {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 2px solid #38bdf8;
+    }
+
+    /* CHART PLACEHOLDER */
+    .chart-placeholder {
+      border-radius: 0.75rem;
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      padding: 0.8rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      margin-bottom: 0.6rem;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th,
+    td {
+      padding: 0.45rem 0.4rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+    }
+
+    th {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .badge-grade-a {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+    }
+
+    .badge-grade-b {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.1);
+      color: #bfdbfe;
+    }
+
+    .badge-grade-c {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.12);
+      color: #e5e7eb;
+    }
+
+    .badge-unit {
+      font-size: 0.7rem;
+      padding: 0.08rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .panel-footer {
+      margin-top: 0.4rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        display: none; /* untuk simple dulu, nanti bisa pakai tombol buka-tutup */
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .grid-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-lower {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .grid-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- SIDEBAR (belum dipakai banyak, nanti kita isi bertahap) -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span>FA</span>
+        Fly Ash Suite
+      </div>
+
+      <div>
+        <div class="nav-section-title">Main</div>
+        <ul class="nav">
+          <li>
+            <a class="active">
+              <span class="icon">📊</span>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="icon">🪨</span>
+              Produksi Fly Ash
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="icon">🧪</span>
+              Kualitas & Lab
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="icon">🏭</span>
+              Pengolahan
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="icon">🚚</span>
+              Logistik & Pelanggan
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="nav-section-title">Governance</div>
+        <ul class="nav">
+          <li>
+            <a>
+              <span class="icon">✅</span>
+              Kepatuhan & Manifest
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="icon">⚠️</span>
+              Risiko & Issue
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        v0.1 • Prototype UI  
+        <br />Fly Ash Management
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <header>
+        <div class="header-title">
+          <div class="header-badge">
+            • Prototype UI · Fly Ash Management
+          </div>
+          <h1>Fly Ash Management Dashboard</h1>
+          <p>
+            Tampilan ringkas kondisi fly ash: produksi, pemanfaatan, stok, dan status
+            pengolahan untuk mendukung keputusan cepat di ruang kontrol maupun kantor.
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn">Hari ini: 18 Nov 2025</button>
+          <button class="btn btn-primary">+ Input Data Manual</button>
+        </div>
+      </header>
+
+      <!-- SUMMARY CARDS -->
+      <section class="grid-cards">
+        <article class="card">
+          <div class="card-title">
+            <span>Produksi Fly Ash (Hari Ini)</span>
+            <span class="badge-unit">Unit 1–7</span>
+          </div>
+          <div class="card-value">935 ton</div>
+          <div class="card-sub">
+            <span>Rata-rata 7 hari: 910 ton/hari</span>
+            <span class="chip-positive">+3% vs rata-rata</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title">
+            <span>Tingkat Pemanfaatan</span>
+            <span>♻️</span>
+          </div>
+          <div class="card-value">78%</div>
+          <div class="card-sub">
+            <span>Target korporat: ≥ 70%</span>
+            <span class="chip-positive">On Track</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title">
+            <span>Stok di Silo & Landfill</span>
+            <span>📦</span>
+          </div>
+          <div class="card-value">12.300 ton</div>
+          <div class="card-sub">
+            <span>Perkiraan penuh: 19 hari lagi</span>
+            <span class="chip-warning">Perlu monitoring</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title">
+            <span>Pendapatan Bulan Ini</span>
+            <span>💰</span>
+          </div>
+          <div class="card-value">Rp 1,85 M</div>
+          <div class="card-sub">
+            <span>Dari 4 pelanggan utama</span>
+            <span class="chip-positive">+12% vs bulan lalu</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- LOWER GRID -->
+      <section class="grid-lower">
+        <!-- PANEL KIRI: CHART -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Tren Produksi & Pemanfaatan Fly Ash</div>
+              <div class="panel-subtitle">
+                Data dummy 14 hari terakhir – nanti diganti data aktual
+              </div>
+            </div>
+            <div class="legend">
+              <span><span class="legend-dot"></span>Produksi (ton)</span>
+              <span><span class="legend-dot2"></span>Pemanfaatan (%)</span>
+            </div>
+          </div>
+
+          <div class="chart-placeholder">
+            Area chart / bar chart akan ditampilkan di sini (Produksi vs Pemanfaatan).
+            Untuk saat ini masih placeholder agar UI-nya jadi dulu.
+          </div>
+
+          <div class="panel-footer">
+            <span>
+              📌 Tahap berikutnya: kita isi chart ini dengan data statis (hard-coded)
+              pakai JavaScript sederhana.
+            </span>
+            <span>Range: 7 / 14 / 30 hari</span>
+          </div>
+        </section>
+
+        <!-- PANEL KANAN: TABEL -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Ringkasan Batch Fly Ash (Kualitas)</div>
+              <div class="panel-subtitle">
+                Contoh format data mutu untuk pengambilan keputusan pemanfaatan.
+              </div>
+            </div>
+          </div>
+
+          <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Batch</th>
+                  <th>Tgl</th>
+                  <th>Unit</th>
+                  <th>LOI (%)</th>
+                  <th>SiO₂ (%)</th>
+                  <th>Grade</th>
+                  <th>Rekomendasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FA-251118-01</td>
+                  <td>18/11</td>
+                  <td>5</td>
+                  <td>3,2</td>
+                  <td>54,8</td>
+                  <td><span class="badge-grade-a">A</span></td>
+                  <td>Silika presipitasi (FLA SUSU)</td>
+                </tr>
+                <tr>
+                  <td>FA-251118-02</td>
+                  <td>18/11</td>
+                  <td>6</td>
+                  <td>4,1</td>
+                  <td>49,3</td>
+                  <td><span class="badge-grade-b">B</span></td>
+                  <td>Cement / beton ready-mix</td>
+                </tr>
+                <tr>
+                  <td>FA-251117-03</td>
+                  <td>17/11</td>
+                  <td>4</td>
+                  <td>5,8</td>
+                  <td>45,7</td>
+                  <td><span class="badge-grade-c">C</span></td>
+                  <td>Urugan / low value</td>
+                </tr>
+                <tr>
+                  <td>FA-251117-01</td>
+                  <td>17/11</td>
+                  <td>7</td>
+                  <td>3,5</td>
+                  <td>52,1</td>
+                  <td><span class="badge-grade-a">A</span></td>
+                  <td>Silika presipitasi (FLA SUSU)</td>
+                </tr>
+                <tr>
+                  <td>FA-251116-02</td>
+                  <td>16/11</td>
+                  <td>3</td>
+                  <td>4,9</td>
+                  <td>47,3</td>
+                  <td><span class="badge-grade-b">B</span></td>
+                  <td>Cement / beton</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel-footer">
+            <span>Filter: Hari ini · 7 hari · Semua</span>
+            <span>Integrasi ke data lab bisa ditambahkan kemudian.</span>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

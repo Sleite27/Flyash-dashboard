@@ -324,20 +324,20 @@
       border: 2px solid #38bdf8;
     }
 
-    /* CHART PLACEHOLDER */
-    .chart-placeholder {
-      border-radius: 0.75rem;
-      border: 1px dashed rgba(148, 163, 184, 0.35);
-      padding: 0.8rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 180px;
-      margin-bottom: 0.6rem;
-    }
+    /* CHART CONTAINER */
+.chart-container {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 0.6rem 0.8rem;
+  background: radial-gradient(circle at top left, #020617, #020617);
+  margin-bottom: 0.6rem;
+}
 
+.chart-container canvas {
+  width: 100%;
+  max-height: 230px;
+}
+    
     /* TABLE */
     table {
       width: 100%;
@@ -592,18 +592,16 @@
             </div>
           </div>
 
-          <div class="chart-placeholder">
-            Area chart / bar chart akan ditampilkan di sini (Produksi vs Pemanfaatan).
-            Untuk saat ini masih placeholder agar UI-nya jadi dulu.
-          </div>
+          <div class="chart-container">
+  <canvas id="flyashChart"></canvas>
+</div>
 
-          <div class="panel-footer">
-            <span>
-              📌 Tahap berikutnya: kita isi chart ini dengan data statis (hard-coded)
-              pakai JavaScript sederhana.
-            </span>
-            <span>Range: 7 / 14 / 30 hari</span>
-          </div>
+<div class="panel-footer">
+  <span>
+    📊 Data dummy 14 hari · Produksi (ton/hari) & Pemanfaatan (%).
+  </span>
+  <span>Range contoh: 14 hari terakhir</span>
+</div>
         </section>
 
         <!-- PANEL KANAN: TABEL -->
@@ -688,5 +686,100 @@
       </section>
     </main>
   </div>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script untuk grafik Fly Ash -->
+  <script>
+    // Data dummy 14 hari (bisa kamu ubah kapan saja)
+    const labels = [
+      '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
+      '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
+    ];
+
+    const produksiData = [
+      880, 895, 910, 905, 920, 930, 915,
+      940, 955, 960, 945, 920, 905, 935
+    ];
+
+    const pemanfaatanData = [
+      72, 73, 74, 75, 76, 77, 76,
+      78, 79, 80, 79, 78, 77, 78
+    ];
+
+    const ctx = document.getElementById('flyashChart').getContext('2d');
+
+    const flyashChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Produksi (ton/hari)',
+            data: produksiData,
+            borderWidth: 2,
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Pemanfaatan (%)',
+            data: pemanfaatanData,
+            borderWidth: 2,
+            borderDash: [6, 4],
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y1',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false   // kita sudah punya legend di header panel
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Produksi (ton/hari)'
+            },
+            grid: {
+              color: 'rgba(30, 64, 175, 0.35)'
+            }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Pemanfaatan (%)'
+            },
+            min: 60,
+            max: 100,
+            grid: {
+              drawOnChartArea: false
+            }
+          }
+        }
+      }
+    });
+  </script>
 </body>
+</html>
+</body>
+
 </html>

@@ -1,0 +1,19 @@
+---
+
+### 2.3. `.gitignore`
+
+```gitignore
+# System files (Windows / macOS)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE settings
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Node modules (kalau nanti pakai Node/React/Vite)
+node_modules/

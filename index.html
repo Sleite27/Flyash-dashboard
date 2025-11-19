@@ -691,12 +691,27 @@
   <canvas id="flyashChart"></canvas>
 </div>
 
-<div class="panel-footer" style="justify-content: space-between;">
+<div class="panel-footer" style="justify-content: space-between; align-items: center; gap: 0.5rem;">
   <span>
     📊 Data dummy 14 hari · Produksi & Pemanfaatan.
   </span>
-  <div>
-    <button class="btn" id="deleteLastBtn">Hapus Data Terakhir</button>
+  <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+    <span style="font-size: 0.75rem;">Hapus data:</span>
+    <select
+      id="deleteDateSelect"
+      style="
+        background: rgba(15, 23, 42, 0.9);
+        border-radius: 999px;
+        border: 1px solid rgba(51, 65, 85, 0.9);
+        color: inherit;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+      "
+    >
+      <!-- opsi akan diisi otomatis oleh JavaScript -->
+    </select>
+    <button class="btn" id="deleteByDateBtn">Hapus</button>
+    <button class="btn" id="deleteLastBtn">Undo Terakhir</button>
   </div>
 </div>
         </section>
@@ -902,6 +917,129 @@
       inputPanel.style.display = 'none';
     }
 
+<!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script untuk grafik + input data + hapus data -->
+  <script>
+    // Data dummy 14 hari (bisa diubah kapan saja)
+    let labels = [
+      '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
+      '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
+    ];
+
+    let produksiData = [
+      880, 895, 910, 905, 920, 930, 915,
+      940, 955, 960, 945, 920, 905, 935
+    ];
+
+    let pemanfaatanData = [
+      72, 73, 74, 75, 76, 77, 76,
+      78, 79, 80, 79, 78, 77, 78
+    ];
+
+    const ctx = document.getElementById('flyashChart').getContext('2d');
+
+    const flyashChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Produksi (ton/hari)',
+            data: produksiData,
+            borderWidth: 2,
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Pemanfaatan (%)',
+            data: pemanfaatanData,
+            borderWidth: 2,
+            borderDash: [6, 4],
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y1',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false // legend sudah di header panel
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Produksi (ton/hari)'
+            },
+            grid: {
+              color: 'rgba(30, 64, 175, 0.35)'
+            }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Pemanfaatan (%)'
+            },
+            min: 60,
+            max: 100,
+            grid: {
+              drawOnChartArea: false
+            }
+          }
+        }
+      }
+    });
+
+    // ====== REFERENSI ELEMEN DOM ======
+    const openInputBtn = document.getElementById('openInputBtn');
+    const inputPanel = document.getElementById('inputPanel');
+    const inputForm = document.getElementById('inputForm');
+    const cancelInputBtn = document.getElementById('cancelInputBtn');
+    const inputDate = document.getElementById('inputDate');
+    const inputProduksi = document.getElementById('inputProduksi');
+    const inputPemanfaatan = document.getElementById('inputPemanfaatan');
+
+    const deleteLastBtn = document.getElementById('deleteLastBtn');
+    const deleteDateSelect = document.getElementById('deleteDateSelect');
+    const deleteByDateBtn = document.getElementById('deleteByDateBtn');
+
+    // ====== FUNGSI BANTUAN ======
+    function showInputPanel() {
+      inputPanel.style.display = 'block';
+      // set default tanggal = hari ini
+      if (!inputDate.value) {
+        const today = new Date();
+        const y = today.getFullYear();
+        const m = String(today.getMonth() + 1).padStart(2, '0');
+        const d = String(today.getDate()).padStart(2, '0');
+        inputDate.value = `${y}-${m}-${d}`;
+      }
+      inputProduksi.focus();
+    }
+
+    function hideInputPanel() {
+      inputPanel.style.display = 'none';
+    }
+
     function formatLabelFromDate(isoDate) {
       if (!isoDate) return 'Custom';
       const d = new Date(isoDate);
@@ -928,9 +1066,39 @@
       flyashChart.data.datasets[0].data = produksiData;
       flyashChart.data.datasets[1].data = pemanfaatanData;
       flyashChart.update();
+      updateDeleteDateOptions();
     }
 
-    // event tombol buka
+    function updateDeleteDateOptions() {
+      if (!deleteDateSelect) return;
+
+      deleteDateSelect.innerHTML = '';
+
+      if (labels.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'Tidak ada data';
+        deleteDateSelect.appendChild(opt);
+        deleteDateSelect.disabled = true;
+        deleteByDateBtn.disabled = true;
+        return;
+      }
+
+      deleteDateSelect.disabled = false;
+      deleteByDateBtn.disabled = false;
+
+      labels.forEach((lbl, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${idx + 1} — ${lbl}`;
+        deleteDateSelect.appendChild(opt);
+      });
+    }
+
+    // panggil sekali di awal supaya dropdown terisi
+    updateDeleteDateOptions();
+
+    // ====== EVENT INPUT DATA MANUAL ======
     openInputBtn.addEventListener('click', () => {
       if (inputPanel.style.display === 'block') {
         hideInputPanel();
@@ -939,12 +1107,10 @@
       }
     });
 
-    // event tombol batal
     cancelInputBtn.addEventListener('click', () => {
       hideInputPanel();
     });
 
-    // submit form
     inputForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
@@ -964,26 +1130,43 @@
       inputForm.reset();
       hideInputPanel();
     });
-// ====== HAPUS DATA TERAKHIR ======
-const deleteLastBtn = document.getElementById('deleteLastBtn');
 
-deleteLastBtn.addEventListener('click', () => {
-  if (labels.length === 0) {
-    alert("Tidak ada data untuk dihapus.");
-    return;
-  }
+    // ====== HAPUS DATA TERAKHIR (UNDO) ======
+    deleteLastBtn.addEventListener('click', () => {
+      if (labels.length === 0) {
+        alert("Tidak ada data untuk dihapus.");
+        return;
+      }
 
-  // hapus data terakhir
-  labels.pop();
-  produksiData.pop();
-  pemanfaatanData.pop();
+      labels.pop();
+      produksiData.pop();
+      pemanfaatanData.pop();
 
-  // update grafik
-  flyashChart.data.labels = labels;
-  flyashChart.data.datasets[0].data = produksiData;
-  flyashChart.data.datasets[1].data = pemanfaatanData;
-  flyashChart.update();
-});
+      flyashChart.data.labels = labels;
+      flyashChart.data.datasets[0].data = produksiData;
+      flyashChart.data.datasets[1].data = pemanfaatanData;
+      flyashChart.update();
+      updateDeleteDateOptions();
+    });
+
+    // ====== HAPUS DATA BERDASARKAN TANGGAL (DARI DROPDOWN) ======
+    deleteByDateBtn.addEventListener('click', () => {
+      const idx = parseInt(deleteDateSelect.value, 10);
+      if (isNaN(idx)) {
+        alert('Tidak ada data yang bisa dihapus.');
+        return;
+      }
+
+      labels.splice(idx, 1);
+      produksiData.splice(idx, 1);
+      pemanfaatanData.splice(idx, 1);
+
+      flyashChart.data.labels = labels;
+      flyashChart.data.datasets[0].data = produksiData;
+      flyashChart.data.datasets[1].data = pemanfaatanData;
+      flyashChart.update();
+      updateDeleteDateOptions();
+    });
   </script>
 </html>
   </script>
@@ -992,5 +1175,6 @@ deleteLastBtn.addEventListener('click', () => {
 </body>
 
 </html>
+
 
 

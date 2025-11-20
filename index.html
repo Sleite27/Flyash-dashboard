@@ -741,6 +741,24 @@
       </tr>
     </thead>
     <tbody>
+      <tbody id="batchTbody">
+  <tr>
+    <td>LOI (%)</td>
+    <td><input id="batchLoi" type="number" step="0.01" /></td>
+  </tr>
+  <tr>
+    <td>SiO₂ (%)</td>
+    <td><input id="batchSio2" type="number" step="0.1" /></td>
+  </tr>
+  <tr>
+    <td>Kadar Air (%)</td>
+    <td><input id="batchMoisture" type="number" step="0.01" /></td>
+  </tr>
+  <tr>
+    <td>Efisiensi Pemanfaatan (%)</td>
+    <td><input id="batchEfficiency" type="number" step="0.1" /></td>
+  </tr>
+</tbody>
       <tr>
         <td>FA-251118-01</td>
         <td>18/11</td>
@@ -820,7 +838,9 @@
   </table>
 </div>
 
-          <div class="panel-footer">
+            <div class="panel-footer" style="justify-content: flex-end;">
+  <button class="btn btn-primary" id="saveBatchBtn">Simpan Batch</button>
+</div>
             <span>Filter: Hari ini · 7 hari · Semua</span>
             <span>Integrasi ke data lab bisa ditambahkan kemudian.</span>
           </div>
@@ -1038,7 +1058,8 @@
         }
       }
     });
-
+loadBatch();
+renderBatchInputs();
     // ====== REFERENSI ELEMEN DOM ======
     const openInputBtn = document.getElementById('openInputBtn');
     const inputPanel = document.getElementById('inputPanel');
@@ -1481,7 +1502,47 @@ updateBatchRecommendations();
       saveData();
       updateDeleteDateOptions();
     });
+// ====== DATA BATCH DEFAULT ======
+const batchDefaults = {
+  loi: 3.25,
+  sio2: 54.2,
+  moisture: 0.25,
+  efficiency: 78
+};
 
+let batchData = { ...batchDefaults };
+
+    function loadBatch() {
+  const raw = localStorage.getItem("batchFlyAsh");
+  if (!raw) return;
+
+  try {
+    batchData = JSON.parse(raw);
+  } catch (e) {
+    console.error("Gagal load batch:", e);
+  }
+}
+
+function saveBatch() {
+  localStorage.setItem("batchFlyAsh", JSON.stringify(batchData));
+}
+    function renderBatchInputs() {
+  document.getElementById("batchLoi").value = batchData.loi;
+  document.getElementById("batchSio2").value = batchData.sio2;
+  document.getElementById("batchMoisture").value = batchData.moisture;
+  document.getElementById("batchEfficiency").value = batchData.efficiency;
+}
+    const saveBatchBtn = document.getElementById("saveBatchBtn");
+
+saveBatchBtn.addEventListener("click", () => {
+  batchData.loi = parseFloat(document.getElementById("batchLoi").value);
+  batchData.sio2 = parseFloat(document.getElementById("batchSio2").value);
+  batchData.moisture = parseFloat(document.getElementById("batchMoisture").value);
+  batchData.efficiency = parseFloat(document.getElementById("batchEfficiency").value);
+
+  saveBatch();
+  alert("Batch berhasil disimpan!");
+});
     // ====== HAPUS DATA BERDASARKAN TANGGAL (DARI DROPDOWN) ======
     deleteByDateBtn.addEventListener('click', () => {
       const idx = parseInt(deleteDateSelect.value, 10);
@@ -1510,6 +1571,7 @@ updateBatchRecommendations();
 </body>
 
 </html>
+
 
 
 

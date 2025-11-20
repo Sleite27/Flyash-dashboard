@@ -716,114 +716,69 @@
 </div>
         </section>
 <!-- PANEL KANAN: RINGKASAN BATCH FLY ASH (KUALITAS) -->
-        <section class="panel">
-          <div class="panel-header">
-            <div>
-              <div class="panel-title">Ringkasan Batch Fly Ash (Kualitas)</div>
-              <div class="panel-subtitle">
-                Contoh format data mutu untuk pengambilan keputusan pemanfaatan.
-              </div>
-            </div>
-          </div>
+<section class="panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Ringkasan Batch Fly Ash (Kualitas)</div>
+      <div class="panel-subtitle">
+        Input batch lab, sistem akan otomatis menentukan grade, rekomendasi, dan margin.
+      </div>
+    </div>
+  </div>
 
-          <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
-            <table id="batchQualityTable">
-              <thead>
-                <tr>
-                  <th>Batch</th>
-                  <th>Tgl</th>
-                  <th>Unit</th>
-                  <th>LOI (%)</th>
-                  <th>SiO₂ (%)</th>
-                  <th>Grade</th>
-                  <th>Rekomendasi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>FA-251118-01</td>
-                  <td>18/11</td>
-                  <td>5</td>
-                  <td>3,2</td>
-                  <td>54,8</td>
-                  <td>
-                    <select class="grade-select">
-                      <option value="A" selected>A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                    </select>
-                  </td>
-                  <td class="reco-cell"></td>
-                </tr>
-                <tr>
-                  <td>FA-251118-02</td>
-                  <td>18/11</td>
-                  <td>6</td>
-                  <td>4,1</td>
-                  <td>49,3</td>
-                  <td>
-                    <select class="grade-select">
-                      <option value="A">A</option>
-                      <option value="B" selected>B</option>
-                      <option value="C">C</option>
-                    </select>
-                  </td>
-                  <td class="reco-cell"></td>
-                </tr>
-                <tr>
-                  <td>FA-251117-03</td>
-                  <td>17/11</td>
-                  <td>4</td>
-                  <td>5,8</td>
-                  <td>45,7</td>
-                  <td>
-                    <select class="grade-select">
-                      <option value="A">A</option>
-                      <option value="B">B</option>
-                      <option value="C" selected>C</option>
-                    </select>
-                  </td>
-                  <td class="reco-cell"></td>
-                </tr>
-                <tr>
-                  <td>FA-251117-01</td>
-                  <td>17/11</td>
-                  <td>7</td>
-                  <td>3,5</td>
-                  <td>52,1</td>
-                  <td>
-                    <select class="grade-select">
-                      <option value="A" selected>A</option>
-                      <option value="B">B</option>
-                      <option value="C">C</option>
-                    </select>
-                  </td>
-                  <td class="reco-cell"></td>
-                </tr>
-                <tr>
-                  <td>FA-251116-02</td>
-                  <td>16/11</td>
-                  <td>3</td>
-                  <td>4,9</td>
-                  <td>47,3</td>
-                  <td>
-                    <select class="grade-select">
-                      <option value="A">A</option>
-                      <option value="B" selected>B</option>
-                      <option value="C">C</option>
-                    </select>
-                  </td>
-                  <td class="reco-cell"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  <!-- FORM INPUT BATCH -->
+  <form id="batchForm" style="margin-bottom: 0.7rem;">
+    <div class="input-grid">
+      <div class="input-field">
+        <label for="batchDate">Tanggal Batch</label>
+        <input type="date" id="batchDate" required />
+      </div>
+      <div class="input-field">
+        <label for="batchUnit">Unit (opsional)</label>
+        <input type="text" id="batchUnit" placeholder="5 / 6 / 7 ..." />
+      </div>
+      <div class="input-field">
+        <label for="batchLoi">LOI (%)</label>
+        <input type="text" id="batchLoi" placeholder="mis. 3,2" />
+      </div>
+      <div class="input-field">
+        <label for="batchSio2">SiO₂ (%)</label>
+        <input type="number" id="batchSio2" step="0.1" min="0" max="100" required />
+      </div>
+    </div>
+    <div class="input-actions">
+      <button type="submit" class="btn btn-primary">Tambah Batch</button>
+    </div>
+  </form>
 
-          <div class="panel-footer">
-            <span>Filter: Hari ini · 7 hari · Semua</span>
-            <span>Integrasi ke data lab bisa ditambahkan kemudian.</span>
-          </div>
-        </section>
+  <!-- TABEL BATCH -->
+  <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
+    <table id="batchQualityTable">
+      <thead>
+        <tr>
+          <th>Batch</th>
+          <th>Tgl</th>
+          <th>Unit</th>
+          <th>LOI (%)</th>
+          <th>SiO₂ (%)</th>
+          <th>Grade</th>
+          <th>Rekomendasi</th>
+          <th>Cost Production</th>
+          <th>Harga</th>
+          <th>Margin</th>
+        </tr>
+      </thead>
+      <tbody id="batchTbody">
+        <!-- akan diisi otomatis lewat JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-footer">
+    <span>Input dari lab, sistem memberi rekomendasi otomatis.</span>
+    <span>Logika grade & margin berdasarkan kadar SiO₂.</span>
+  </div>
+</section>
         </section> <!-- penutup .grid-lower -->
   </main>
 </div>
@@ -1022,52 +977,171 @@
     saveData();
     updateDeleteDateOptions();
   }
+// ====== UTILITAS FORMAT TANGGAL & UANG ======
+function formatDateShort(isoDate) {
+  if (!isoDate) return '-';
+  const d = new Date(isoDate);
+  if (isNaN(d.getTime())) return isoDate;
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  return `${day}/${month}`;
+}
 
-  // ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
-  function recommendationForGrade(grade) {
-    switch (grade) {
-      case 'A':
-        return 'Silika presipitasi (FLA SUSU)';
-      case 'B':
-        return 'Cement / beton ready-mix';
-      case 'C':
-        return 'Urugan / low value';
-      default:
-        return '-';
+function formatIDR(value) {
+  if (typeof value !== 'number') return value;
+  return 'IDR ' + value.toLocaleString('id-ID');
+}
+
+// ====== GENERATE BATCH ID OTOMATIS ======
+function generateBatchId(isoDate) {
+  const d = new Date(isoDate);
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const rand = Math.floor(Math.random() * 90) + 10; // 2 digit random
+  return `FA-${yy}${mm}${dd}-${rand}`;
+}
+
+// ====== KLASIFIKASI BERDASARKAN SiO2 ======
+function classifyBySiO2(sio2Input) {
+  const val = parseFloat(sio2Input);
+  if (isNaN(val)) {
+    return {
+      grade: '-',
+      rekomendasi: '-',
+      cost: 0,
+      price: 0,
+      margin: 0
+    };
+  }
+
+  let grade, rekomendasi, cost, price;
+
+  if (val >= 50) {
+    grade = 'A';
+    rekomendasi = 'Silika presipitasi';
+    cost = 8000000;
+    price = 17000000;
+  } else if (val >= 40) {
+    grade = 'B';
+    rekomendasi = 'Cement / beton ready-mix';
+    cost = 50000;
+    price = 400000;
+  } else {
+    grade = 'C';
+    rekomendasi = 'Bahan konstruksi';
+    cost = 250000;
+    price = 600000;
+  }
+
+  const margin = price - cost;
+  return { grade, rekomendasi, cost, price, margin };
+}
+
+// ====== DATA BATCH DI MEMORY ======
+let batchList = [];
+
+// ====== RENDER TABEL BATCH ======
+function renderBatchTable() {
+  const tbody = document.getElementById('batchTbody');
+  if (!tbody) return;
+
+  tbody.innerHTML = '';
+
+  if (batchList.length === 0) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 10;
+    td.textContent = 'Belum ada batch yang diinput.';
+    td.style.textAlign = 'center';
+    td.style.color = '#9ca3af';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  batchList.forEach(batch => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${batch.id}</td>
+      <td>${batch.tgl}</td>
+      <td>${batch.unit}</td>
+      <td>${batch.loi}</td>
+      <td>${batch.sio2}</td>
+      <td>${batch.grade}</td>
+      <td>${batch.rekomendasi}</td>
+      <td>${formatIDR(batch.cost)}</td>
+      <td>${formatIDR(batch.price)}</td>
+      <td>${formatIDR(batch.margin)}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ====== FORM BATCH DOM ======
+const batchForm = document.getElementById('batchForm');
+const batchDate = document.getElementById('batchDate');
+const batchUnit = document.getElementById('batchUnit');
+const batchLoi = document.getElementById('batchLoi');
+const batchSio2 = document.getElementById('batchSio2');
+
+// ====== EVENT: TAMBAH BATCH BARU ======
+if (batchForm) {
+  batchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const tanggal = batchDate.value;
+    const unit = batchUnit.value || '-';
+    const loi = batchLoi.value || '-';
+    const sio2 = batchSio2.value;
+
+    if (!tanggal) {
+      alert('Tanggal batch belum diisi.');
+      return;
     }
-  }
+    if (!sio2) {
+      alert('SiO₂ wajib diisi.');
+      return;
+    }
 
-  function updateBatchRecommendations() {
-    const table = document.getElementById('batchQualityTable');
-    if (!table) return;
+    const { grade, rekomendasi, cost, price, margin } = classifyBySiO2(sio2);
+    const id = generateBatchId(tanggal);
+    const tglDisplay = formatDateShort(tanggal);
 
-    const rows = table.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-      const gradeSelect = row.querySelector('.grade-select');
-      const recoCell = row.querySelector('.reco-cell');
-      if (!gradeSelect || !recoCell) return;
+    const newBatch = {
+      id,
+      tgl: tglDisplay,
+      unit,
+      loi,
+      sio2,
+      grade,
+      rekomendasi,
+      cost,
+      price,
+      margin
+    };
 
-      const grade = gradeSelect.value;
-      recoCell.textContent = recommendationForGrade(grade);
-    });
-  }
+    batchList.push(newBatch);
+    renderBatchTable();
 
-  function attachBatchGradeListeners() {
-    const table = document.getElementById('batchQualityTable');
-    if (!table) return;
+    batchForm.reset();
+  });
+}
 
-    const selects = table.querySelectorAll('.grade-select');
-    selects.forEach(sel => {
-      sel.addEventListener('change', () => {
-        updateBatchRecommendations();
-      });
-    });
-  }
+// Render awal (supaya muncul pesan "Belum ada batch")
+renderBatchTable();
+  // ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
+  
+
+  
+
+  
 
   // ====== INISIALISASI UI SETELAH CHART JADI ======
   updateDeleteDateOptions();
-  attachBatchGradeListeners();
-  updateBatchRecommendations();
+
 
   // ====== EVENT INPUT DATA MANUAL ======
   openInputBtn.addEventListener('click', () => {
@@ -1142,3 +1216,4 @@
 </script>
 </body>
 </html>
+

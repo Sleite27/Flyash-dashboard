@@ -715,8 +715,7 @@
   </div>
 </div>
         </section>
-
-        <!-- PANEL KANAN: TABEL -->
+<!-- PANEL KANAN: RINGKASAN BATCH FLY ASH (KUALITAS) -->
         <section class="panel">
           <div class="panel-header">
             <div>
@@ -728,124 +727,104 @@
           </div>
 
           <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
-  <table id="batchQualityTable">
-    <thead>
-      <tr>
-        <th>Batch</th>
-        <th>Tgl</th>
-        <th>Unit</th>
-        <th>LOI (%)</th>
-        <th>SiO₂ (%)</th>
-        <th>Grade</th>
-        <th>Rekomendasi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tbody id="batchTbody">
-  <tr>
-    <td>LOI (%)</td>
-    <td><input id="batchLoi" type="number" step="0.01" /></td>
-  </tr>
-  <tr>
-    <td>SiO₂ (%)</td>
-    <td><input id="batchSio2" type="number" step="0.1" /></td>
-  </tr>
-  <tr>
-    <td>Kadar Air (%)</td>
-    <td><input id="batchMoisture" type="number" step="0.01" /></td>
-  </tr>
-  <tr>
-    <td>Efisiensi Pemanfaatan (%)</td>
-    <td><input id="batchEfficiency" type="number" step="0.1" /></td>
-  </tr>
-</tbody>
-      <tr>
-        <td>FA-251118-01</td>
-        <td>18/11</td>
-        <td>5</td>
-        <td>3,2</td>
-        <td>54,8</td>
-        <td>
-          <select class="grade-select">
-            <option value="A" selected>A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </select>
-        </td>
-        <td class="reco-cell"></td>
-      </tr>
-      <tr>
-        <td>FA-251118-02</td>
-        <td>18/11</td>
-        <td>6</td>
-        <td>4,1</td>
-        <td>49,3</td>
-        <td>
-          <select class="grade-select">
-            <option value="A">A</option>
-            <option value="B" selected>B</option>
-            <option value="C">C</option>
-          </select>
-        </td>
-        <td class="reco-cell"></td>
-      </tr>
-      <tr>
-        <td>FA-251117-03</td>
-        <td>17/11</td>
-        <td>4</td>
-        <td>5,8</td>
-        <td>45,7</td>
-        <td>
-          <select class="grade-select">
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C" selected>C</option>
-          </select>
-        </td>
-        <td class="reco-cell"></td>
-      </tr>
-      <tr>
-        <td>FA-251117-01</td>
-        <td>17/11</td>
-        <td>7</td>
-        <td>3,5</td>
-        <td>52,1</td>
-        <td>
-          <select class="grade-select">
-            <option value="A" selected>A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </select>
-        </td>
-        <td class="reco-cell"></td>
-      </tr>
-      <tr>
-        <td>FA-251116-02</td>
-        <td>16/11</td>
-        <td>3</td>
-        <td>4,9</td>
-        <td>47,3</td>
-        <td>
-          <select class="grade-select">
-            <option value="A">A</option>
-            <option value="B" selected>B</option>
-            <option value="C">C</option>
-          </select>
-        </td>
-        <td class="reco-cell"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+            <table id="batchQualityTable">
+              <thead>
+                <tr>
+                  <th>Batch</th>
+                  <th>Tgl</th>
+                  <th>Unit</th>
+                  <th>LOI (%)</th>
+                  <th>SiO₂ (%)</th>
+                  <th>Grade</th>
+                  <th>Rekomendasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FA-251118-01</td>
+                  <td>18/11</td>
+                  <td>5</td>
+                  <td>3,2</td>
+                  <td>54,8</td>
+                  <td>
+                    <select class="grade-select">
+                      <option value="A" selected>A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </td>
+                  <td class="reco-cell"></td>
+                </tr>
+                <tr>
+                  <td>FA-251118-02</td>
+                  <td>18/11</td>
+                  <td>6</td>
+                  <td>4,1</td>
+                  <td>49,3</td>
+                  <td>
+                    <select class="grade-select">
+                      <option value="A">A</option>
+                      <option value="B" selected>B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </td>
+                  <td class="reco-cell"></td>
+                </tr>
+                <tr>
+                  <td>FA-251117-03</td>
+                  <td>17/11</td>
+                  <td>4</td>
+                  <td>5,8</td>
+                  <td>45,7</td>
+                  <td>
+                    <select class="grade-select">
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C" selected>C</option>
+                    </select>
+                  </td>
+                  <td class="reco-cell"></td>
+                </tr>
+                <tr>
+                  <td>FA-251117-01</td>
+                  <td>17/11</td>
+                  <td>7</td>
+                  <td>3,5</td>
+                  <td>52,1</td>
+                  <td>
+                    <select class="grade-select">
+                      <option value="A" selected>A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </td>
+                  <td class="reco-cell"></td>
+                </tr>
+                <tr>
+                  <td>FA-251116-02</td>
+                  <td>16/11</td>
+                  <td>3</td>
+                  <td>4,9</td>
+                  <td>47,3</td>
+                  <td>
+                    <select class="grade-select">
+                      <option value="A">A</option>
+                      <option value="B" selected>B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </td>
+                  <td class="reco-cell"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <div class="panel-footer" style="justify-content: flex-end;">
-  <button class="btn btn-primary" id="saveBatchBtn">Simpan Batch</button>
-</div>
+          <div class="panel-footer">
             <span>Filter: Hari ini · 7 hari · Semua</span>
             <span>Integrasi ke data lab bisa ditambahkan kemudian.</span>
           </div>
         </section>
-      </section>
+        
     </main>
   </div>
   <!-- Chart.js CDN -->
@@ -1571,6 +1550,7 @@ saveBatchBtn.addEventListener("click", () => {
 </body>
 
 </html>
+
 
 
 

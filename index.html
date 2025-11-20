@@ -728,67 +728,97 @@
           </div>
 
           <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Batch</th>
-                  <th>Tgl</th>
-                  <th>Unit</th>
-                  <th>LOI (%)</th>
-                  <th>SiO₂ (%)</th>
-                  <th>Grade</th>
-                  <th>Rekomendasi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>FA-251118-01</td>
-                  <td>18/11</td>
-                  <td>5</td>
-                  <td>3,2</td>
-                  <td>54,8</td>
-                  <td><span class="badge-grade-a">A</span></td>
-                  <td>Silika presipitasi (FLA SUSU)</td>
-                </tr>
-                <tr>
-                  <td>FA-251118-02</td>
-                  <td>18/11</td>
-                  <td>6</td>
-                  <td>4,1</td>
-                  <td>49,3</td>
-                  <td><span class="badge-grade-b">B</span></td>
-                  <td>Cement / beton ready-mix</td>
-                </tr>
-                <tr>
-                  <td>FA-251117-03</td>
-                  <td>17/11</td>
-                  <td>4</td>
-                  <td>5,8</td>
-                  <td>45,7</td>
-                  <td><span class="badge-grade-c">C</span></td>
-                  <td>Urugan / low value</td>
-                </tr>
-                <tr>
-                  <td>FA-251117-01</td>
-                  <td>17/11</td>
-                  <td>7</td>
-                  <td>3,5</td>
-                  <td>52,1</td>
-                  <td><span class="badge-grade-a">A</span></td>
-                  <td>Silika presipitasi (FLA SUSU)</td>
-                </tr>
-                <tr>
-                  <td>FA-251116-02</td>
-                  <td>16/11</td>
-                  <td>3</td>
-                  <td>4,9</td>
-                  <td>47,3</td>
-                  <td><span class="badge-grade-b">B</span></td>
-                  <td>Cement / beton</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  <table id="batchQualityTable">
+    <thead>
+      <tr>
+        <th>Batch</th>
+        <th>Tgl</th>
+        <th>Unit</th>
+        <th>LOI (%)</th>
+        <th>SiO₂ (%)</th>
+        <th>Grade</th>
+        <th>Rekomendasi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>FA-251118-01</td>
+        <td>18/11</td>
+        <td>5</td>
+        <td>3,2</td>
+        <td>54,8</td>
+        <td>
+          <select class="grade-select">
+            <option value="A" selected>A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </td>
+        <td class="reco-cell"></td>
+      </tr>
+      <tr>
+        <td>FA-251118-02</td>
+        <td>18/11</td>
+        <td>6</td>
+        <td>4,1</td>
+        <td>49,3</td>
+        <td>
+          <select class="grade-select">
+            <option value="A">A</option>
+            <option value="B" selected>B</option>
+            <option value="C">C</option>
+          </select>
+        </td>
+        <td class="reco-cell"></td>
+      </tr>
+      <tr>
+        <td>FA-251117-03</td>
+        <td>17/11</td>
+        <td>4</td>
+        <td>5,8</td>
+        <td>45,7</td>
+        <td>
+          <select class="grade-select">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C" selected>C</option>
+          </select>
+        </td>
+        <td class="reco-cell"></td>
+      </tr>
+      <tr>
+        <td>FA-251117-01</td>
+        <td>17/11</td>
+        <td>7</td>
+        <td>3,5</td>
+        <td>52,1</td>
+        <td>
+          <select class="grade-select">
+            <option value="A" selected>A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </td>
+        <td class="reco-cell"></td>
+      </tr>
+      <tr>
+        <td>FA-251116-02</td>
+        <td>16/11</td>
+        <td>3</td>
+        <td>4,9</td>
+        <td>47,3</td>
+        <td>
+          <select class="grade-select">
+            <option value="A">A</option>
+            <option value="B" selected>B</option>
+            <option value="C">C</option>
+          </select>
+        </td>
+        <td class="reco-cell"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
           <div class="panel-footer">
             <span>Filter: Hari ini · 7 hari · Semua</span>
@@ -1353,9 +1383,52 @@
       saveData();
       updateDeleteDateOptions();
     }
+// ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
+function recommendationForGrade(grade) {
+  switch (grade) {
+    case 'A':
+      return 'Silika presipitasi (FLA SUSU)';
+    case 'B':
+      return 'Cement / beton ready-mix';
+    case 'C':
+      return 'Urugan / low value';
+    default:
+      return '-';
+  }
+}
 
+function updateBatchRecommendations() {
+  const table = document.getElementById('batchQualityTable');
+  if (!table) return;
+
+  const rows = table.querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    const gradeSelect = row.querySelector('.grade-select');
+    const recoCell = row.querySelector('.reco-cell');
+    if (!gradeSelect || !recoCell) return;
+
+    const grade = gradeSelect.value;
+    recoCell.textContent = recommendationForGrade(grade);
+  });
+}
+
+function attachBatchGradeListeners() {
+  const table = document.getElementById('batchQualityTable');
+  if (!table) return;
+
+  const selects = table.querySelectorAll('.grade-select');
+  selects.forEach(sel => {
+    sel.addEventListener('change', () => {
+      updateBatchRecommendations();
+    });
+  });
+}
+    
     // Panggil sekali setelah chart dibuat (pakai data yang sudah diload)
     updateDeleteDateOptions();
+renderHistoryTable();
+attachBatchGradeListeners();
+updateBatchRecommendations();
 
     // ====== EVENT INPUT DATA MANUAL ======
     openInputBtn.addEventListener('click', () => {
@@ -1428,6 +1501,7 @@
       saveData();
       updateDeleteDateOptions();
     });
+    
   </script>
 </html>
   </script>
@@ -1436,6 +1510,7 @@
 </body>
 
 </html>
+
 
 
 

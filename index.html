@@ -824,736 +824,321 @@
             <span>Integrasi ke data lab bisa ditambahkan kemudian.</span>
           </div>
         </section>
-        
-    </main>
-  </div>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Script untuk grafik + input data -->
-  <script>
-    // Data dummy 14 hari (bisa diubah kapan saja)
-    let labels = [
-      '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
-      '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
-    ];
-
-    let produksiData = [
-      880, 895, 910, 905, 920, 930, 915,
-      940, 955, 960, 945, 920, 905, 935
-    ];
-
-    let pemanfaatanData = [
-      72, 73, 74, 75, 76, 77, 76,
-      78, 79, 80, 79, 78, 77, 78
-    ];
-
-    const ctx = document.getElementById('flyashChart').getContext('2d');
-
-    const flyashChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Produksi (ton/hari)',
-            data: produksiData,
-            borderWidth: 2,
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Pemanfaatan (%)',
-            data: pemanfaatanData,
-            borderWidth: 2,
-            borderDash: [6, 4],
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y1',
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false // legend sudah di header panel
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
-        },
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
-        scales: {
-          y: {
-            type: 'linear',
-            position: 'left',
-            title: {
-              display: true,
-              text: 'Produksi (ton/hari)'
-            },
-            grid: {
-              color: 'rgba(30, 64, 175, 0.35)'
-            }
-          },
-          y1: {
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Pemanfaatan (%)'
-            },
-            min: 60,
-            max: 100,
-            grid: {
-              drawOnChartArea: false
-            }
-          }
-        }
-      }
-    });
-
-    // ====== LOGIKA INPUT DATA MANUAL ======
-
-    const openInputBtn = document.getElementById('openInputBtn');
-    const inputPanel = document.getElementById('inputPanel');
-    const inputForm = document.getElementById('inputForm');
-    const cancelInputBtn = document.getElementById('cancelInputBtn');
-    const inputDate = document.getElementById('inputDate');
-    const inputProduksi = document.getElementById('inputProduksi');
-    const inputPemanfaatan = document.getElementById('inputPemanfaatan');
-
-    function showInputPanel() {
-      inputPanel.style.display = 'block';
-      // set default tanggal = hari ini
-      if (!inputDate.value) {
-        const today = new Date();
-        const y = today.getFullYear();
-        const m = String(today.getMonth() + 1).padStart(2, '0');
-        const d = String(today.getDate()).padStart(2, '0');
-        inputDate.value = `${y}-${m}-${d}`;
-      }
-      inputProduksi.focus();
-    }
-
-    function hideInputPanel() {
-      inputPanel.style.display = 'none';
-    }
+        </section> <!-- penutup .grid-lower -->
+  </main>
+</div>
 
 <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Script untuk grafik + input data + hapus data -->
-  <script>
-    // Data dummy 14 hari (bisa diubah kapan saja)
-    let labels = [
-      '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
-      '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
-    ];
+<script>
+  const STORAGE_KEY = 'flyashDashboardDataV1';
 
-    let produksiData = [
-      880, 895, 910, 905, 920, 930, 915,
-      940, 955, 960, 945, 920, 905, 935
-    ];
+  // ====== DATA DEFAULT (kalau belum ada di localStorage) ======
+  let labels = [
+    '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
+    '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
+  ];
 
-    let pemanfaatanData = [
-      72, 73, 74, 75, 76, 77, 76,
-      78, 79, 80, 79, 78, 77, 78
-    ];
+  let produksiData = [
+    880, 895, 910, 905, 920, 930, 915,
+    940, 955, 960, 945, 920, 905, 935
+  ];
 
-    const ctx = document.getElementById('flyashChart').getContext('2d');
+  let pemanfaatanData = [
+    72, 73, 74, 75, 76, 77, 76,
+    78, 79, 80, 79, 78, 77, 78
+  ];
 
-    const flyashChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Produksi (ton/hari)',
-            data: produksiData,
-            borderWidth: 2,
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Pemanfaatan (%)',
-            data: pemanfaatanData,
-            borderWidth: 2,
-            borderDash: [6, 4],
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y1',
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false // legend sudah di header panel
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
-        },
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
-        scales: {
-          y: {
-            type: 'linear',
-            position: 'left',
-            title: {
-              display: true,
-              text: 'Produksi (ton/hari)'
-            },
-            grid: {
-              color: 'rgba(30, 64, 175, 0.35)'
-            }
-          },
-          y1: {
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Pemanfaatan (%)'
-            },
-            min: 60,
-            max: 100,
-            grid: {
-              drawOnChartArea: false
-            }
-          }
-        }
-      }
-    });
-loadBatch();
-renderBatchInputs();
-    // ====== REFERENSI ELEMEN DOM ======
-    const openInputBtn = document.getElementById('openInputBtn');
-    const inputPanel = document.getElementById('inputPanel');
-    const inputForm = document.getElementById('inputForm');
-    const cancelInputBtn = document.getElementById('cancelInputBtn');
-    const inputDate = document.getElementById('inputDate');
-    const inputProduksi = document.getElementById('inputProduksi');
-    const inputPemanfaatan = document.getElementById('inputPemanfaatan');
+  // ====== LOCAL STORAGE UNTUK DATA GRAFIK ======
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
 
-    const deleteLastBtn = document.getElementById('deleteLastBtn');
-    const deleteDateSelect = document.getElementById('deleteDateSelect');
-    const deleteByDateBtn = document.getElementById('deleteByDateBtn');
-
-    // ====== FUNGSI BANTUAN ======
-    function showInputPanel() {
-      inputPanel.style.display = 'block';
-      // set default tanggal = hari ini
-      if (!inputDate.value) {
-        const today = new Date();
-        const y = today.getFullYear();
-        const m = String(today.getMonth() + 1).padStart(2, '0');
-        const d = String(today.getDate()).padStart(2, '0');
-        inputDate.value = `${y}-${m}-${d}`;
-      }
-      inputProduksi.focus();
-    }
-
-    function hideInputPanel() {
-      inputPanel.style.display = 'none';
-    }
-
-    function formatLabelFromDate(isoDate) {
-      if (!isoDate) return 'Custom';
-      const d = new Date(isoDate);
-      if (isNaN(d.getTime())) return isoDate;
-      const day = String(d.getDate()).padStart(2, '0');
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-      return `${day} ${months[d.getMonth()]}`;
-    }
-
-    function addDataPoint(label, produksi, pemanfaatan) {
-      labels.push(label);
-      produksiData.push(produksi);
-      pemanfaatanData.push(pemanfaatan);
-
-      // Batasi hanya 14 data terakhir agar grafik tetap rapi
-      const maxPoints = 14;
-      if (labels.length > maxPoints) {
-        labels = labels.slice(-maxPoints);
-        produksiData = produksiData.slice(-maxPoints);
-        pemanfaatanData = pemanfaatanData.slice(-maxPoints);
-      }
-
-      flyashChart.data.labels = labels;
-      flyashChart.data.datasets[0].data = produksiData;
-      flyashChart.data.datasets[1].data = pemanfaatanData;
-      flyashChart.update();
-      updateDeleteDateOptions();
-    }
-
-    function updateDeleteDateOptions() {
-      if (!deleteDateSelect) return;
-
-      deleteDateSelect.innerHTML = '';
-
-      if (labels.length === 0) {
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.textContent = 'Tidak ada data';
-        deleteDateSelect.appendChild(opt);
-        deleteDateSelect.disabled = true;
-        deleteByDateBtn.disabled = true;
-        return;
-      }
-
-      deleteDateSelect.disabled = false;
-      deleteByDateBtn.disabled = false;
-
-      labels.forEach((lbl, idx) => {
-        const opt = document.createElement('option');
-        opt.value = idx;
-        opt.textContent = `${idx + 1} — ${lbl}`;
-        deleteDateSelect.appendChild(opt);
-      });
-    }
-
-    // panggil sekali di awal supaya dropdown terisi
-    updateDeleteDateOptions();
-
-    // ====== EVENT INPUT DATA MANUAL ======
-    openInputBtn.addEventListener('click', () => {
-      if (inputPanel.style.display === 'block') {
-        hideInputPanel();
-      } else {
-        showInputPanel();
-      }
-    });
-
-    cancelInputBtn.addEventListener('click', () => {
-      hideInputPanel();
-    });
-
-    inputForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const tanggal = inputDate.value;
-      const produksi = parseFloat(inputProduksi.value);
-      const pemanfaatan = parseFloat(inputPemanfaatan.value);
-
-      if (isNaN(produksi) || isNaN(pemanfaatan)) {
-        alert('Mohon isi angka yang valid untuk produksi dan pemanfaatan.');
-        return;
-      }
-<!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Script untuk grafik + input data + hapus data + localStorage -->
-  <script>
-    const STORAGE_KEY = 'flyashDashboardDataV1';
-
-    // ====== DATA DEFAULT (kalau belum ada di localStorage) ======
-    let labels = [
-      '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
-      '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
-    ];
-
-    let produksiData = [
-      880, 895, 910, 905, 920, 930, 915,
-      940, 955, 960, 945, 920, 905, 935
-    ];
-
-    let pemanfaatanData = [
-      72, 73, 74, 75, 76, 77, 76,
-      78, 79, 80, 79, 78, 77, 78
-    ];
-
-    // ====== FUNGSI LOCAL STORAGE ======
-    function loadData() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return false;
-
-        const parsed = JSON.parse(raw);
-        if (
-          !parsed.labels ||
-          !parsed.produksiData ||
-          !parsed.pemanfaatanData
-        ) return false;
-
-        if (
-          !Array.isArray(parsed.labels) ||
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed.labels) ||
           !Array.isArray(parsed.produksiData) ||
-          !Array.isArray(parsed.pemanfaatanData)
-        ) return false;
+          !Array.isArray(parsed.pemanfaatanData)) return;
 
-        if (
-          parsed.labels.length !== parsed.produksiData.length ||
-          parsed.labels.length !== parsed.pemanfaatanData.length
-        ) return false;
+      if (parsed.labels.length !== parsed.produksiData.length ||
+          parsed.labels.length !== parsed.pemanfaatanData.length) return;
 
-        labels = parsed.labels;
-        produksiData = parsed.produksiData;
-        pemanfaatanData = parsed.pemanfaatanData;
-        return true;
-      } catch (e) {
-        console.error('Gagal load dari localStorage', e);
-        return false;
-      }
+      labels = parsed.labels;
+      produksiData = parsed.produksiData;
+      pemanfaatanData = parsed.pemanfaatanData;
+    } catch (e) {
+      console.error('Gagal load dari localStorage', e);
     }
+  }
 
-    function saveData() {
-      try {
-        const payload = {
-          labels,
-          produksiData,
-          pemanfaatanData
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-      } catch (e) {
-        console.error('Gagal simpan ke localStorage', e);
-      }
+  function saveData() {
+    try {
+      const payload = { labels, produksiData, pemanfaatanData };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (e) {
+      console.error('Gagal simpan ke localStorage', e);
     }
+  }
 
-    // Coba load data tersimpan. Kalau gagal, pakai data default.
-    loadData();
+  // Coba load data tersimpan. Kalau gagal, pakai data default.
+  loadData();
 
-    // ====== INISIALISASI CHART ======
-    const ctx = document.getElementById('flyashChart').getContext('2d');
+  // ====== INISIALISASI CHART ======
+  const ctx = document.getElementById('flyashChart').getContext('2d');
 
-    const flyashChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Produksi (ton/hari)',
-            data: produksiData,
-            borderWidth: 2,
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y',
-          },
-          {
-            label: 'Pemanfaatan (%)',
-            data: pemanfaatanData,
-            borderWidth: 2,
-            borderDash: [6, 4],
-            tension: 0.35,
-            pointRadius: 3,
-            yAxisID: 'y1',
-          }
-        ]
+  const flyashChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Produksi (ton/hari)',
+          data: produksiData,
+          borderWidth: 2,
+          tension: 0.35,
+          pointRadius: 3,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Pemanfaatan (%)',
+          data: pemanfaatanData,
+          borderWidth: 2,
+          borderDash: [6, 4],
+          tension: 0.35,
+          pointRadius: 3,
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { mode: 'index', intersect: false }
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false // legend sudah di header panel
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Produksi (ton/hari)' },
+          grid: { color: 'rgba(30, 64, 175, 0.35)' }
         },
-        interaction: {
-          mode: 'index',
-          intersect: false
-        },
-        scales: {
-          y: {
-            type: 'linear',
-            position: 'left',
-            title: {
-              display: true,
-              text: 'Produksi (ton/hari)'
-            },
-            grid: {
-              color: 'rgba(30, 64, 175, 0.35)'
-            }
-          },
-          y1: {
-            type: 'linear',
-            position: 'right',
-            title: {
-              display: true,
-              text: 'Pemanfaatan (%)'
-            },
-            min: 60,
-            max: 100,
-            grid: {
-              drawOnChartArea: false
-            }
-          }
+        y1: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Pemanfaatan (%)' },
+          min: 60,
+          max: 100,
+          grid: { drawOnChartArea: false }
         }
       }
-    });
-
-    // ====== REFERENSI ELEMEN DOM ======
-    const openInputBtn = document.getElementById('openInputBtn');
-    const inputPanel = document.getElementById('inputPanel');
-    const inputForm = document.getElementById('inputForm');
-    const cancelInputBtn = document.getElementById('cancelInputBtn');
-    const inputDate = document.getElementById('inputDate');
-    const inputProduksi = document.getElementById('inputProduksi');
-    const inputPemanfaatan = document.getElementById('inputPemanfaatan');
-
-    const deleteLastBtn = document.getElementById('deleteLastBtn');
-    const deleteDateSelect = document.getElementById('deleteDateSelect');
-    const deleteByDateBtn = document.getElementById('deleteByDateBtn');
-
-    // ====== FUNGSI BANTUAN ======
-    function showInputPanel() {
-      inputPanel.style.display = 'block';
-      // set default tanggal = hari ini
-      if (!inputDate.value) {
-        const today = new Date();
-        const y = today.getFullYear();
-        const m = String(today.getMonth() + 1).padStart(2, '0');
-        const d = String(today.getDate()).padStart(2, '0');
-        inputDate.value = `${y}-${m}-${d}`;
-      }
-      inputProduksi.focus();
     }
+  });
 
-    function hideInputPanel() {
-      inputPanel.style.display = 'none';
+  // ====== REFERENSI ELEMEN DOM ======
+  const openInputBtn = document.getElementById('openInputBtn');
+  const inputPanel = document.getElementById('inputPanel');
+  const inputForm = document.getElementById('inputForm');
+  const cancelInputBtn = document.getElementById('cancelInputBtn');
+  const inputDate = document.getElementById('inputDate');
+  const inputProduksi = document.getElementById('inputProduksi');
+  const inputPemanfaatan = document.getElementById('inputPemanfaatan');
+
+  const deleteLastBtn = document.getElementById('deleteLastBtn');
+  const deleteDateSelect = document.getElementById('deleteDateSelect');
+  const deleteByDateBtn = document.getElementById('deleteByDateBtn');
+
+  // ====== FUNGSI BANTUAN UMUM ======
+  function showInputPanel() {
+    inputPanel.style.display = 'block';
+    if (!inputDate.value) {
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, '0');
+      const d = String(today.getDate()).padStart(2, '0');
+      inputDate.value = `${y}-${m}-${d}`;
     }
-
-    function formatLabelFromDate(isoDate) {
-      if (!isoDate) return 'Custom';
-      const d = new Date(isoDate);
-      if (isNaN(d.getTime())) return isoDate;
-      const day = String(d.getDate()).padStart(2, '0');
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-      return `${day} ${months[d.getMonth()]}`;
-    }
-
-    function updateDeleteDateOptions() {
-      if (!deleteDateSelect) return;
-
-      deleteDateSelect.innerHTML = '';
-
-      if (labels.length === 0) {
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.textContent = 'Tidak ada data';
-        deleteDateSelect.appendChild(opt);
-        deleteDateSelect.disabled = true;
-        deleteByDateBtn.disabled = true;
-        return;
-      }
-
-      deleteDateSelect.disabled = false;
-      deleteByDateBtn.disabled = false;
-
-      labels.forEach((lbl, idx) => {
-        const opt = document.createElement('option');
-        opt.value = idx;
-        opt.textContent = `${idx + 1} — ${lbl}`;
-        deleteDateSelect.appendChild(opt);
-      });
-    }
-
-    function addDataPoint(label, produksi, pemanfaatan) {
-      labels.push(label);
-      produksiData.push(produksi);
-      pemanfaatanData.push(pemanfaatan);
-
-      // Batasi hanya 14 data terakhir agar grafik tetap rapi
-      const maxPoints = 14;
-      if (labels.length > maxPoints) {
-        labels = labels.slice(-maxPoints);
-        produksiData = produksiData.slice(-maxPoints);
-        pemanfaatanData = pemanfaatanData.slice(-maxPoints);
-      }
-
-      flyashChart.data.labels = labels;
-      flyashChart.data.datasets[0].data = produksiData;
-      flyashChart.data.datasets[1].data = pemanfaatanData;
-      flyashChart.update();
-      saveData();
-      updateDeleteDateOptions();
-    }
-// ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
-function recommendationForGrade(grade) {
-  switch (grade) {
-    case 'A':
-      return 'Silika presipitasi (FLA SUSU)';
-    case 'B':
-      return 'Cement / beton ready-mix';
-    case 'C':
-      return 'Urugan / low value';
-    default:
-      return '-';
+    inputProduksi.focus();
   }
-}
 
-function updateBatchRecommendations() {
-  const table = document.getElementById('batchQualityTable');
-  if (!table) return;
+  function hideInputPanel() {
+    inputPanel.style.display = 'none';
+  }
 
-  const rows = table.querySelectorAll('tbody tr');
-  rows.forEach(row => {
-    const gradeSelect = row.querySelector('.grade-select');
-    const recoCell = row.querySelector('.reco-cell');
-    if (!gradeSelect || !recoCell) return;
+  function formatLabelFromDate(isoDate) {
+    if (!isoDate) return 'Custom';
+    const d = new Date(isoDate);
+    if (isNaN(d.getTime())) return isoDate;
+    const day = String(d.getDate()).padStart(2, '0');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    return `${day} ${months[d.getMonth()]}`;
+  }
 
-    const grade = gradeSelect.value;
-    recoCell.textContent = recommendationForGrade(grade);
-  });
-}
+  function updateDeleteDateOptions() {
+    if (!deleteDateSelect) return;
 
-function attachBatchGradeListeners() {
-  const table = document.getElementById('batchQualityTable');
-  if (!table) return;
+    deleteDateSelect.innerHTML = '';
 
-  const selects = table.querySelectorAll('.grade-select');
-  selects.forEach(sel => {
-    sel.addEventListener('change', () => {
-      updateBatchRecommendations();
+    if (labels.length === 0) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = 'Tidak ada data';
+      deleteDateSelect.appendChild(opt);
+      deleteDateSelect.disabled = true;
+      deleteByDateBtn.disabled = true;
+      return;
+    }
+
+    deleteDateSelect.disabled = false;
+    deleteByDateBtn.disabled = false;
+
+    labels.forEach((lbl, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${idx + 1} — ${lbl}`;
+      deleteDateSelect.appendChild(opt);
     });
-  });
-}
-    
-    // Panggil sekali setelah chart dibuat (pakai data yang sudah diload)
+  }
+
+  function addDataPoint(label, produksi, pemanfaatan) {
+    labels.push(label);
+    produksiData.push(produksi);
+    pemanfaatanData.push(pemanfaatan);
+
+    const maxPoints = 14;
+    if (labels.length > maxPoints) {
+      labels = labels.slice(-maxPoints);
+      produksiData = produksiData.slice(-maxPoints);
+      pemanfaatanData = pemanfaatanData.slice(-maxPoints);
+    }
+
+    flyashChart.data.labels = labels;
+    flyashChart.data.datasets[0].data = produksiData;
+    flyashChart.data.datasets[1].data = pemanfaatanData;
+    flyashChart.update();
+    saveData();
     updateDeleteDateOptions();
-renderHistoryTable();
-attachBatchGradeListeners();
-updateBatchRecommendations();
-
-    // ====== EVENT INPUT DATA MANUAL ======
-    openInputBtn.addEventListener('click', () => {
-      if (inputPanel.style.display === 'block') {
-        hideInputPanel();
-      } else {
-        showInputPanel();
-      }
-    });
-
-    cancelInputBtn.addEventListener('click', () => {
-      hideInputPanel();
-    });
-
-    inputForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const tanggal = inputDate.value;
-      const produksi = parseFloat(inputProduksi.value);
-      const pemanfaatan = parseFloat(inputPemanfaatan.value);
-
-      if (isNaN(produksi) || isNaN(pemanfaatan)) {
-        alert('Mohon isi angka yang valid untuk produksi dan pemanfaatan.');
-        return;
-      }
-
-      const label = formatLabelFromDate(tanggal);
-      addDataPoint(label, produksi, pemanfaatan);
-
-      // reset & tutup panel
-      inputForm.reset();
-      hideInputPanel();
-    });
-
-    // ====== HAPUS DATA TERAKHIR (UNDO) ======
-    deleteLastBtn.addEventListener('click', () => {
-      if (labels.length === 0) {
-        alert("Tidak ada data untuk dihapus.");
-        return;
-      }
-
-      labels.pop();
-      produksiData.pop();
-      pemanfaatanData.pop();
-
-      flyashChart.data.labels = labels;
-      flyashChart.data.datasets[0].data = produksiData;
-      flyashChart.data.datasets[1].data = pemanfaatanData;
-      flyashChart.update();
-      saveData();
-      updateDeleteDateOptions();
-    });
-// ====== DATA BATCH DEFAULT ======
-const batchDefaults = {
-  loi: 3.25,
-  sio2: 54.2,
-  moisture: 0.25,
-  efficiency: 78
-};
-
-let batchData = { ...batchDefaults };
-
-    function loadBatch() {
-  const raw = localStorage.getItem("batchFlyAsh");
-  if (!raw) return;
-
-  try {
-    batchData = JSON.parse(raw);
-  } catch (e) {
-    console.error("Gagal load batch:", e);
   }
-}
 
-function saveBatch() {
-  localStorage.setItem("batchFlyAsh", JSON.stringify(batchData));
-}
-    function renderBatchInputs() {
-  document.getElementById("batchLoi").value = batchData.loi;
-  document.getElementById("batchSio2").value = batchData.sio2;
-  document.getElementById("batchMoisture").value = batchData.moisture;
-  document.getElementById("batchEfficiency").value = batchData.efficiency;
-}
-    const saveBatchBtn = document.getElementById("saveBatchBtn");
+  // ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
+  function recommendationForGrade(grade) {
+    switch (grade) {
+      case 'A':
+        return 'Silika presipitasi (FLA SUSU)';
+      case 'B':
+        return 'Cement / beton ready-mix';
+      case 'C':
+        return 'Urugan / low value';
+      default:
+        return '-';
+    }
+  }
 
-saveBatchBtn.addEventListener("click", () => {
-  batchData.loi = parseFloat(document.getElementById("batchLoi").value);
-  batchData.sio2 = parseFloat(document.getElementById("batchSio2").value);
-  batchData.moisture = parseFloat(document.getElementById("batchMoisture").value);
-  batchData.efficiency = parseFloat(document.getElementById("batchEfficiency").value);
+  function updateBatchRecommendations() {
+    const table = document.getElementById('batchQualityTable');
+    if (!table) return;
 
-  saveBatch();
-  alert("Batch berhasil disimpan!");
-});
-    // ====== HAPUS DATA BERDASARKAN TANGGAL (DARI DROPDOWN) ======
-    deleteByDateBtn.addEventListener('click', () => {
-      const idx = parseInt(deleteDateSelect.value, 10);
-      if (isNaN(idx)) {
-        alert('Tidak ada data yang bisa dihapus.');
-        return;
-      }
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const gradeSelect = row.querySelector('.grade-select');
+      const recoCell = row.querySelector('.reco-cell');
+      if (!gradeSelect || !recoCell) return;
 
-      labels.splice(idx, 1);
-      produksiData.splice(idx, 1);
-      pemanfaatanData.splice(idx, 1);
-
-      flyashChart.data.labels = labels;
-      flyashChart.data.datasets[0].data = produksiData;
-      flyashChart.data.datasets[1].data = pemanfaatanData;
-      flyashChart.update();
-      saveData();
-      updateDeleteDateOptions();
+      const grade = gradeSelect.value;
+      recoCell.textContent = recommendationForGrade(grade);
     });
-    
-  </script>
-</html>
-  </script>
+  }
+
+  function attachBatchGradeListeners() {
+    const table = document.getElementById('batchQualityTable');
+    if (!table) return;
+
+    const selects = table.querySelectorAll('.grade-select');
+    selects.forEach(sel => {
+      sel.addEventListener('change', () => {
+        updateBatchRecommendations();
+      });
+    });
+  }
+
+  // ====== INISIALISASI UI SETELAH CHART JADI ======
+  updateDeleteDateOptions();
+  attachBatchGradeListeners();
+  updateBatchRecommendations();
+
+  // ====== EVENT INPUT DATA MANUAL ======
+  openInputBtn.addEventListener('click', () => {
+    if (inputPanel.style.display === 'block') {
+      hideInputPanel();
+    } else {
+      showInputPanel();
+    }
+  });
+
+  cancelInputBtn.addEventListener('click', () => {
+    hideInputPanel();
+  });
+
+  inputForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const tanggal = inputDate.value;
+    const produksi = parseFloat(inputProduksi.value);
+    const pemanfaatan = parseFloat(inputPemanfaatan.value);
+
+    if (isNaN(produksi) || isNaN(pemanfaatan)) {
+      alert('Mohon isi angka yang valid untuk produksi dan pemanfaatan.');
+      return;
+    }
+
+    const label = formatLabelFromDate(tanggal);
+    addDataPoint(label, produksi, pemanfaatan);
+
+    inputForm.reset();
+    hideInputPanel();
+  });
+
+  // ====== HAPUS DATA TERAKHIR (UNDO) ======
+  deleteLastBtn.addEventListener('click', () => {
+    if (labels.length === 0) {
+      alert("Tidak ada data untuk dihapus.");
+      return;
+    }
+
+    labels.pop();
+    produksiData.pop();
+    pemanfaatanData.pop();
+
+    flyashChart.data.labels = labels;
+    flyashChart.data.datasets[0].data = produksiData;
+    flyashChart.data.datasets[1].data = pemanfaatanData;
+    flyashChart.update();
+    saveData();
+    updateDeleteDateOptions();
+  });
+
+  // ====== HAPUS DATA BERDASARKAN TANGGAL (DARI DROPDOWN) ======
+  deleteByDateBtn.addEventListener('click', () => {
+    const idx = parseInt(deleteDateSelect.value, 10);
+    if (isNaN(idx)) {
+      alert('Tidak ada data yang bisa dihapus.');
+      return;
+    }
+
+    labels.splice(idx, 1);
+    produksiData.splice(idx, 1);
+    pemanfaatanData.splice(idx, 1);
+
+    flyashChart.data.labels = labels;
+    flyashChart.data.datasets[0].data = produksiData;
+    flyashChart.data.datasets[1].data = pemanfaatanData;
+    flyashChart.update();
+    saveData();
+    updateDeleteDateOptions();
+  });
+</script>
 </body>
 </html>
-</body>
-
-</html>
-
-
-
-
-
-
-

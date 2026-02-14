@@ -1,53 +1,80 @@
-# Fly Ash Management Dashboard
+# CIRCA Dashboard (Dummy)
+**CIRCA — Carbon Intensity Real-time Control Assistant**
 
-Prototype **web-based dashboard** untuk manajemen pengelolaan dan pengolahan fly ash di PLTU.
-
-Dashboard ini fokus pada:
-- Ringkasan produksi fly ash per hari
-- Tingkat pemanfaatan fly ash
-- Stok di silo dan landfill
-- Pendapatan dari pemanfaatan fly ash
-- Ringkasan mutu / kualitas batch fly ash untuk pengambilan keputusan pemanfaatan (silika, semen, dll)
-
-> Status: **Prototype UI v0.1** – data masih dummy / statis.
+Dashboard web statis (prototype) untuk menampilkan konsep sistem CIRCA: pemantauan **Carbon Intensity (kg CO₂/MWh)** dan **AI Recommendation Log** berbasis data (dummy).  
+Dipakai untuk kebutuhan cover/proposal/Power Idea Contest, dan dapat dikembangkan menjadi dashboard real-time terintegrasi historian/DCS.
 
 ---
 
-## 🔧 Cara Menjalankan Secara Lokal
+## Preview Fitur
+- KPI utama:
+  - Carbon Intensity (kg CO₂/MWh)
+  - CO₂ Emissions Today (ton/hari)
+  - Net Load (MW)
+  - Aux Power (MW)
+- Grafik tren 14 hari:
+  - Carbon Intensity (kg CO₂/MWh)
+  - CO₂ Rate (t/h)
+- Input data manual (dummy) untuk update grafik
+- Hapus data (per tanggal / undo terakhir)
+- AI Recommendation Log:
+  - Tambah rekomendasi + estimasi impact (kg CO₂/MWh)
+  - Status: Recommended / Applied / Hold
+- Penyimpanan lokal menggunakan `localStorage` (tanpa backend)
 
-1. Clone atau download repo ini.
-2. Buka file `index.html` dengan browser (Chrome, Edge, dsb):
-   - Klik dua kali `index.html`, atau
-   - Drag & drop `index.html` ke jendela browser.
-
-Tidak diperlukan backend atau instalasi apa pun.
-
----
-
-## 🌐 Deploy dengan GitHub Pages
-
-1. Buka repo ini di GitHub.
-2. Masuk ke tab **Settings** → **Pages**.
-3. Pada bagian *Source*, pilih:
-   - `Deploy from a branch`
-   - Branch: `main`
-   - Folder: `/root`
-4. Klik **Save**.
-5. Setelah beberapa detik, GitHub akan memberikan URL seperti:
-
-   `https://username.github.io/flyash-dashboard`
+> Catatan: Semua data saat ini **dummy** dan hanya untuk demonstrasi UI/konsep.
 
 ---
 
-## 📂 Struktur Folder
+## Struktur File
 
-```text
-flyash-dashboard/
-├── index.html      # Halaman utama dashboard
-├── README.md       # Dokumentasi proyek
-├── .gitignore      # File yang diabaikan oleh Git
-├── LICENSE         # Lisensi MIT
-└── assets/
-    ├── img/        # (opsional) untuk logo/gambar
-    ├── css/        # (opsional) untuk file CSS terpisah
-    └── js/         # (opsional) untuk file JavaScript
+---
+
+## Cara Menjalankan (Local)
+### Opsi 1 — Langsung buka
+- Klik dua kali `index.html` → akan terbuka di browser.
+
+### Opsi 2 — Live Server (disarankan)
+Jika pakai VS Code:
+1. Install extension **Live Server**
+2. Klik kanan `index.html` → **Open with Live Server**
+
+---
+
+## Deploy ke GitHub Pages
+1. Buat repository baru (misal: `circa-dashboard`)
+2. Upload `index.html` dan `README.md`
+3. Masuk ke **Settings → Pages**
+4. Source: **Deploy from a branch**
+5. Branch: `main` dan folder: `/ (root)`
+6. Save → link GitHub Pages akan muncul
+
+---
+
+## Kustomisasi Cepat
+Di `index.html`, kamu bisa ubah:
+- Nama unit / kapasitas (400 MW & 600 MW)
+- Target Carbon Intensity (misal: 1020 kg CO₂/MWh)
+- Data default grafik (array `ciData` dan `co2RateData`)
+- Isi rekomendasi dummy (array `recoList`)
+
+---
+
+## Rencana Pengembangan (Roadmap)
+- Integrasi data historian (CSV export / API / PI System connector)
+- Parameter snapshot: O₂ stack, MS spray, RH spray, vacuum, aux load
+- Forecast baseline vs optimized (prediksi CO₂ tahunan)
+- Model rekomendasi berbasis machine learning (regression / tree-based model)
+- User management + audit trail untuk kebutuhan MRV
+
+---
+
+## Lisensi
+Prototype internal untuk kebutuhan riset/kompetisi.  
+Silakan tambahkan lisensi sesuai kebijakan organisasi (MIT/Apache-2.0/internal).
+
+---
+
+## Kontak
+Owner/Engineer: **Syarif (UBP Suralaya)**  
+Project: **Power Idea Contest 2026 — CIRCA**

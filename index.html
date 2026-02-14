@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Fly Ash Management Dashboard</title>
+  <title>CIRCA Dashboard — Carbon Intensity Real-time Control Assistant</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -16,27 +16,19 @@
       --border: #1e293b;
       --danger: #f97373;
       --warning: #facc15;
+      --info: #38bdf8;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
       color: var(--text);
       min-height: 100vh;
     }
 
-    .app {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      min-height: 100vh;
-    }
+    .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 
     /* SIDEBAR */
     .sidebar {
@@ -80,14 +72,9 @@
       margin-bottom: 0.5rem;
     }
 
-    .nav {
-      list-style: none;
-      margin-bottom: 1.5rem;
-    }
+    .nav { list-style: none; margin-bottom: 1.5rem; }
 
-    .nav li {
-      margin-bottom: 0.25rem;
-    }
+    .nav li { margin-bottom: 0.25rem; }
 
     .nav a {
       display: flex;
@@ -102,11 +89,7 @@
       cursor: pointer;
     }
 
-    .nav a span.icon {
-      width: 18px;
-      text-align: center;
-      font-size: 0.9rem;
-    }
+    .nav a span.icon { width: 18px; text-align: center; font-size: 0.9rem; }
 
     .nav a:hover {
       background: rgba(15, 23, 42, 0.9);
@@ -144,19 +127,9 @@
       margin-bottom: 1.5rem;
     }
 
-    header-title {
-      display: block;
-    }
+    header h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
 
-    header h1 {
-      font-size: 1.6rem;
-      margin-bottom: 0.25rem;
-    }
-
-    header p {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+    header p { font-size: 0.9rem; color: var(--muted); }
 
     .header-badge {
       display: inline-flex;
@@ -195,9 +168,7 @@
       font-weight: 600;
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
+    .btn-primary:hover { filter: brightness(1.05); }
 
     /* SUMMARY CARDS */
     .grid-cards {
@@ -224,11 +195,7 @@
       align-items: center;
     }
 
-    .card-value {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
+    .card-value { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.25rem; }
 
     .card-sub {
       font-size: 0.75rem;
@@ -236,6 +203,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: .6rem;
+      flex-wrap: wrap;
     }
 
     .chip-positive {
@@ -263,11 +232,7 @@
     }
 
     /* LOWER GRID */
-    .grid-lower {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 1rem;
-    }
+    .grid-lower { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1rem; }
 
     .panel {
       background: rgba(15, 23, 42, 0.95);
@@ -284,17 +249,11 @@
       justify-content: space-between;
       align-items: baseline;
       margin-bottom: 0.7rem;
+      gap: 1rem;
     }
 
-    .panel-title {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .panel-subtitle {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
+    .panel-title { font-size: 0.95rem; font-weight: 500; }
+    .panel-subtitle { font-size: 0.75rem; color: var(--muted); }
 
     .legend {
       display: flex;
@@ -302,89 +261,46 @@
       font-size: 0.7rem;
       color: var(--muted);
       flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
     }
 
-    .legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+    .legend span { display: inline-flex; align-items: center; gap: 0.25rem; }
 
     .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--accent);
+      width: 10px; height: 10px; border-radius: 999px; background: var(--accent);
     }
 
     .legend-dot2 {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      border: 2px solid #38bdf8;
+      width: 10px; height: 10px; border-radius: 999px;
+      border: 2px solid var(--info);
+      background: transparent;
     }
 
     /* CHART CONTAINER */
-.chart-container {
-  border-radius: 0.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  padding: 0.6rem 0.8rem;
-  background: radial-gradient(circle at top left, #020617, #020617);
-  margin-bottom: 0.6rem;
-}
-
-.chart-container canvas {
-  width: 100%;
-  max-height: 230px;
-}
-    
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.8rem;
+    .chart-container {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 0.6rem 0.8rem;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      margin-bottom: 0.6rem;
     }
 
-    th,
-    td {
+    .chart-container canvas { width: 100%; max-height: 260px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+
+    th, td {
       padding: 0.45rem 0.4rem;
       text-align: left;
       border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+      vertical-align: top;
     }
 
-    th {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
+    th { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
 
-    tbody tr:hover {
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    .badge-grade-a {
-      font-size: 0.7rem;
-      padding: 0.1rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.12);
-      color: #bbf7d0;
-    }
-
-    .badge-grade-b {
-      font-size: 0.7rem;
-      padding: 0.1rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, 0.1);
-      color: #bfdbfe;
-    }
-
-    .badge-grade-c {
-      font-size: 0.7rem;
-      padding: 0.1rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.12);
-      color: #e5e7eb;
-    }
+    tbody tr:hover { background: rgba(15, 23, 42, 0.85); }
 
     .badge-unit {
       font-size: 0.7rem;
@@ -392,6 +308,28 @@
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .badge-ok {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+    }
+    .badge-warn {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(250, 204, 21, 0.1);
+      color: #facc15;
+    }
+    .badge-risk {
+      font-size: 0.7rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(248, 113, 113, 0.12);
+      color: #fecaca;
     }
 
     .panel-footer {
@@ -402,154 +340,86 @@
       justify-content: space-between;
       gap: 0.5rem;
       flex-wrap: wrap;
+      align-items: center;
     }
-/* INPUT PANEL */
-.input-panel {
-  margin-bottom: 1rem;
-  display: none; /* default disembunyikan */
-}
 
-.input-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
+    /* INPUT PANEL */
+    .input-panel { margin-bottom: 1rem; display: none; }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
 
-.input-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.8rem;
-}
+    .input-field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8rem; }
+    .input-field label { color: var(--muted); }
 
-.input-field label {
-  color: var(--muted);
-}
+    .input-field input, .input-field select, .input-field textarea {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 0.5rem;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      padding: 0.35rem 0.5rem;
+      color: var(--text);
+      font-size: 0.8rem;
+    }
 
-.input-field input {
-  background: rgba(15, 23, 42, 0.9);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(51, 65, 85, 0.9);
-  padding: 0.35rem 0.5rem;
-  color: var(--text);
-  font-size: 0.8rem;
-}
+    .input-field textarea { min-height: 74px; resize: vertical; }
 
-.input-field input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
+    .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
 
-.input-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-@media (max-width: 800px) {
-  .input-grid {
-    grid-template-columns: 1fr;
-  }
-}
-    
+    .input-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+    @media (max-width: 800px) { .input-grid { grid-template-columns: 1fr; } }
+
     /* RESPONSIVE */
     @media (max-width: 900px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-        height: auto;
-        display: none; /* untuk simple dulu, nanti bisa pakai tombol buka-tutup */
-      }
-
-      .main {
-        padding: 1rem;
-      }
-
-      .grid-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .grid-lower {
-        grid-template-columns: 1fr;
-      }
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; display: none; }
+      .main { padding: 1rem; }
+      .grid-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-lower { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 600px) {
-      .grid-cards {
-        grid-template-columns: 1fr;
-      }
-    }
+    @media (max-width: 600px) { .grid-cards { grid-template-columns: 1fr; } }
   </style>
 </head>
+
 <body>
   <div class="app">
-    <!-- SIDEBAR (belum dipakai banyak, nanti kita isi bertahap) -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="logo">
-        <span>FA</span>
-        Fly Ash Suite
+        <span>CI</span>
+        CIRCA
       </div>
 
       <div>
         <div class="nav-section-title">Main</div>
         <ul class="nav">
-          <li>
-            <a class="active">
-              <span class="icon">📊</span>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon">🪨</span>
-              Produksi Fly Ash
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon">🧪</span>
-              Kualitas & Lab
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon">🏭</span>
-              Pengolahan
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon">🚚</span>
-              Logistik & Pelanggan
-            </a>
-          </li>
+          <li><a class="active"><span class="icon">📊</span>Dashboard</a></li>
+          <li><a><span class="icon">🧠</span>AI Recommendations</a></li>
+          <li><a><span class="icon">🔥</span>Combustion & Boiler</a></li>
+          <li><a><span class="icon">💧</span>Steam Cycle</a></li>
+          <li><a><span class="icon">⚡</span>Auxiliaries</a></li>
         </ul>
       </div>
 
       <div>
         <div class="nav-section-title">Governance</div>
         <ul class="nav">
-          <li>
-            <a>
-              <span class="icon">✅</span>
-              Kepatuhan & Manifest
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon">⚠️</span>
-              Risiko & Issue
-            </a>
-          </li>
+          <li><a><span class="icon">✅</span>MRV & Reporting</a></li>
+          <li><a><span class="icon">⚠️</span>Risk & Alerts</a></li>
         </ul>
       </div>
 
       <div class="sidebar-footer">
-        v0.1 • Prototype UI  
-        <br />Fly Ash Management
+        v0.1 • Prototype UI
+        <br />Carbon Intensity Optimization
+        <br />PLTU UBP Suralaya (Dummy)
       </div>
     </aside>
 
@@ -557,27 +427,27 @@
     <main class="main">
       <header>
         <div class="header-title">
-          <div class="header-badge">
-            • Prototype UI · Fly Ash Management
-          </div>
-          <h1>Fly Ash Management Dashboard</h1>
+          <div class="header-badge">• Prototype UI · CIRCA (Dummy)</div>
+          <h1>CIRCA Dashboard</h1>
           <p>
-            Tampilan ringkas kondisi fly ash: produksi, pemanfaatan, stok, dan status
-            pengolahan untuk mendukung keputusan cepat di ruang kontrol maupun kantor.
+            Carbon Intensity Real-time Control Assistant — tampilan ringkas untuk memantau
+            <b>carbon intensity (kg CO₂/MWh)</b>, emisi CO₂, beban net, dan rekomendasi operasi berbasis data.
           </p>
         </div>
         <div class="header-actions">
-          <button class="btn">Hari ini: 18 Nov 2025</button>
+          <button class="btn" id="todayBtn">Hari ini: —</button>
+          <button class="btn">Unit: 1–4 (400 MW) & 5–7 (600 MW)</button>
           <button class="btn btn-primary" id="openInputBtn">+ Input Data Manual</button>
         </div>
       </header>
-<!-- INPUT DATA MANUAL PANEL -->
+
+      <!-- INPUT DATA MANUAL PANEL -->
       <section class="panel input-panel" id="inputPanel">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Input Data Manual</div>
+            <div class="panel-title">Input Data Manual (Dummy)</div>
             <div class="panel-subtitle">
-              Tambahkan data produksi & pemanfaatan untuk dimasukkan ke grafik.
+              Tambahkan data harian untuk masuk ke grafik: Carbon Intensity & CO₂ rate.
             </div>
           </div>
         </div>
@@ -590,26 +460,13 @@
             </div>
 
             <div class="input-field">
-              <label for="inputProduksi">Produksi (ton/hari)</label>
-              <input
-                type="number"
-                id="inputProduksi"
-                min="0"
-                step="0.1"
-                required
-              />
+              <label for="inputCI">Carbon Intensity (kg CO₂/MWh)</label>
+              <input type="number" id="inputCI" min="0" step="0.1" required />
             </div>
 
             <div class="input-field">
-              <label for="inputPemanfaatan">Pemanfaatan (%)</label>
-              <input
-                type="number"
-                id="inputPemanfaatan"
-                min="0"
-                max="100"
-                step="0.1"
-                required
-              />
+              <label for="inputCO2Rate">CO₂ Rate (t/h)</label>
+              <input type="number" id="inputCO2Rate" min="0" step="0.1" required />
             </div>
           </div>
 
@@ -619,601 +476,509 @@
           </div>
         </form>
       </section>
+
       <!-- SUMMARY CARDS -->
       <section class="grid-cards">
         <article class="card">
           <div class="card-title">
-            <span>Produksi Fly Ash (Hari Ini)</span>
-            <span class="badge-unit">Unit 1–7</span>
+            <span>Carbon Intensity (Saat Ini)</span>
+            <span class="badge-unit">kg CO₂/MWh</span>
           </div>
-          <div class="card-value">935 ton</div>
+          <div class="card-value" id="kpiCI">1,060</div>
           <div class="card-sub">
-            <span>Rata-rata 7 hari: 910 ton/hari</span>
-            <span class="chip-positive">+3% vs rata-rata</span>
+            <span>Target internal: ≤ 1,020</span>
+            <span class="chip-warning" id="chipCI">Need tuning</span>
           </div>
         </article>
 
         <article class="card">
           <div class="card-title">
-            <span>Tingkat Pemanfaatan</span>
-            <span>♻️</span>
+            <span>CO₂ Emissions (Hari Ini)</span>
+            <span>🟦</span>
           </div>
-          <div class="card-value">78%</div>
+          <div class="card-value" id="kpiCO2Today">6.520 ton</div>
           <div class="card-sub">
-            <span>Target korporat: ≥ 70%</span>
-            <span class="chip-positive">On Track</span>
+            <span>Baseline: 6.800 ton/hari</span>
+            <span class="chip-positive" id="chipCO2">-4.1% vs baseline</span>
           </div>
         </article>
 
         <article class="card">
           <div class="card-title">
-            <span>Stok di Silo & Landfill</span>
-            <span>📦</span>
+            <span>Net Load</span>
+            <span>⚡</span>
           </div>
-          <div class="card-value">12.300 ton</div>
+          <div class="card-value" id="kpiNetLoad">520 MW</div>
           <div class="card-sub">
-            <span>Perkiraan penuh: 19 hari lagi</span>
-            <span class="chip-warning">Perlu monitoring</span>
+            <span>Unit aktif: 600 MW class</span>
+            <span class="chip-positive">Stable</span>
           </div>
         </article>
 
         <article class="card">
           <div class="card-title">
-            <span>Pendapatan Bulan Ini</span>
-            <span>💰</span>
+            <span>Aux Power (Proxy)</span>
+            <span>🔌</span>
           </div>
-          <div class="card-value">Rp 1,85 M</div>
+          <div class="card-value" id="kpiAux">27.4 MW</div>
           <div class="card-sub">
-            <span>Dari 4 pelanggan utama</span>
-            <span class="chip-positive">+12% vs bulan lalu</span>
+            <span>Target: ≤ 26.5 MW</span>
+            <span class="chip-warning" id="chipAux">Optimize</span>
           </div>
         </article>
       </section>
 
       <!-- LOWER GRID -->
       <section class="grid-lower">
-        <!-- PANEL KIRI: CHART -->
+        <!-- LEFT: CHART -->
         <section class="panel">
           <div class="panel-header">
             <div>
-              <div class="panel-title">Tren Produksi & Pemanfaatan Fly Ash</div>
-              <div class="panel-subtitle">
-                Data dummy 14 hari terakhir – nanti diganti data aktual
-              </div>
+              <div class="panel-title">Tren Carbon Intensity & CO₂ Rate</div>
+              <div class="panel-subtitle">Data dummy 14 hari terakhir – siap diganti data aktual historian</div>
             </div>
             <div class="legend">
-              <span><span class="legend-dot"></span>Produksi (ton)</span>
-              <span><span class="legend-dot2"></span>Pemanfaatan (%)</span>
+              <span><span class="legend-dot"></span>Carbon Intensity (kg CO₂/MWh)</span>
+              <span><span class="legend-dot2"></span>CO₂ Rate (t/h)</span>
             </div>
           </div>
 
           <div class="chart-container">
-  <canvas id="flyashChart"></canvas>
-</div>
+            <canvas id="ciChart"></canvas>
+          </div>
 
-<div class="panel-footer" style="justify-content: space-between; align-items: center; gap: 0.5rem;">
-  <span>
-    📊 Data dummy 14 hari · Produksi & Pemanfaatan.
-  </span>
-  <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
-    <span style="font-size: 0.75rem;">Hapus data:</span>
-    <select
-      id="deleteDateSelect"
-      style="
-        background: rgba(15, 23, 42, 0.9);
-        border-radius: 999px;
-        border: 1px solid rgba(51, 65, 85, 0.9);
-        color: inherit;
-        font-size: 0.75rem;
-        padding: 0.15rem 0.5rem;
-      "
-    >
-      <!-- opsi akan diisi otomatis oleh JavaScript -->
-    </select>
-    <button class="btn" id="deleteByDateBtn">Hapus</button>
-    <button class="btn" id="deleteLastBtn">Undo Terakhir</button>
-  </div>
-</div>
+          <div class="panel-footer" style="justify-content: space-between;">
+            <span>📊 Data dummy 14 hari · CI & CO₂ rate.</span>
+            <div style="display:flex; flex-wrap:wrap; gap:.4rem; align-items:center;">
+              <span style="font-size:0.75rem;">Hapus data:</span>
+              <select id="deleteDateSelect" style="
+                background: rgba(15, 23, 42, 0.9);
+                border-radius: 999px;
+                border: 1px solid rgba(51, 65, 85, 0.9);
+                color: inherit;
+                font-size: 0.75rem;
+                padding: 0.15rem 0.5rem;
+              "></select>
+              <button class="btn" id="deleteByDateBtn">Hapus</button>
+              <button class="btn" id="deleteLastBtn">Undo Terakhir</button>
+            </div>
+          </div>
         </section>
-<!-- PANEL KANAN: RINGKASAN BATCH FLY ASH (KUALITAS) -->
-<section class="panel">
-  <div class="panel-header">
-    <div>
-      <div class="panel-title">Ringkasan Batch Fly Ash (Kualitas)</div>
-      <div class="panel-subtitle">
-        Input batch lab, sistem akan otomatis menentukan grade, rekomendasi, dan margin.
-      </div>
-    </div>
+
+        <!-- RIGHT: AI RECO LOG -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">AI Recommendation Log (Dummy)</div>
+              <div class="panel-subtitle">
+                Catat rekomendasi dan status implementasi untuk evidence improvement.
+              </div>
+            </div>
+          </div>
+
+          <form id="recoForm" style="margin-bottom: 0.7rem;">
+            <div class="input-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+              <div class="input-field">
+                <label for="recoDate">Tanggal</label>
+                <input type="date" id="recoDate" required />
+              </div>
+              <div class="input-field">
+                <label for="recoImpact">Estimasi Impact (kg CO₂/MWh)</label>
+                <input type="number" id="recoImpact" step="0.1" required placeholder="-6.0" />
+              </div>
+              <div class="input-field">
+                <label for="recoStatus">Status</label>
+                <select id="recoStatus">
+                  <option value="recommended">Recommended</option>
+                  <option value="applied">Applied</option>
+                  <option value="hold">Hold</option>
+                </select>
+              </div>
+              <div class="input-field" style="grid-column: 1 / -1;">
+                <label for="recoText">Rekomendasi</label>
+                <textarea id="recoText" required placeholder="Contoh: Turunkan O₂ stack ke 3.5%, kurangi MS spray 1 t/h, optimasi vacuum 0.5 kPa."></textarea>
+              </div>
+            </div>
+            <div class="input-actions">
+              <button type="submit" class="btn btn-primary">Tambah Log</button>
+            </div>
+          </form>
+
+          <div style="max-height: 260px; overflow:auto; margin-bottom: .4rem;">
+            <table id="recoTable">
+              <thead>
+                <tr>
+                  <th>Tgl</th>
+                  <th>Rekomendasi</th>
+                  <th>Impact</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recoTbody"></tbody>
+            </table>
+          </div>
+
+          <div class="panel-footer">
+            <span>Gunakan sebagai bukti implementasi bertahap (pilot).</span>
+            <span>Format siap untuk laporan contest.</span>
+          </div>
+        </section>
+      </section>
+    </main>
   </div>
 
-  <!-- FORM INPUT BATCH -->
-  <form id="batchForm" style="margin-bottom: 0.7rem;">
-    <div class="input-grid">
-      <div class="input-field">
-        <label for="batchDate">Tanggal Batch</label>
-        <input type="date" id="batchDate" required />
-      </div>
-      <div class="input-field">
-        <label for="batchUnit">Unit (opsional)</label>
-        <input type="text" id="batchUnit" placeholder="5 / 6 / 7 ..." />
-      </div>
-      <div class="input-field">
-        <label for="batchLoi">LOI (%)</label>
-        <input type="text" id="batchLoi" placeholder="mis. 3,2" />
-      </div>
-      <div class="input-field">
-        <label for="batchSio2">SiO₂ (%)</label>
-        <input type="number" id="batchSio2" step="0.1" min="0" max="100" required />
-      </div>
-    </div>
-    <div class="input-actions">
-      <button type="submit" class="btn btn-primary">Tambah Batch</button>
-    </div>
-  </form>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- TABEL BATCH -->
-  <div style="max-height: 220px; overflow: auto; margin-bottom: 0.4rem;">
-    <table id="batchQualityTable">
-      <thead>
-        <tr>
-          <th>Batch</th>
-          <th>Tgl</th>
-          <th>Unit</th>
-          <th>LOI (%)</th>
-          <th>SiO₂ (%)</th>
-          <th>Grade</th>
-          <th>Rekomendasi</th>
-          <th>Cost Production</th>
-          <th>Harga</th>
-          <th>Margin</th>
-        </tr>
-      </thead>
-      <tbody id="batchTbody">
-        <!-- akan diisi otomatis lewat JavaScript -->
-      </tbody>
-    </table>
-  </div>
+  <script>
+    // ====== DATE HEADER ======
+    (function () {
+      const todayBtn = document.getElementById('todayBtn');
+      const now = new Date();
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      const dd = String(now.getDate()).padStart(2,'0');
+      const mm = months[now.getMonth()];
+      const yyyy = now.getFullYear();
+      todayBtn.textContent = `Hari ini: ${dd} ${mm} ${yyyy}`;
+    })();
 
-  <div class="panel-footer">
-    <span>Input dari lab, sistem memberi rekomendasi otomatis.</span>
-    <span>Logika grade & margin berdasarkan kadar SiO₂.</span>
-  </div>
-</section>
-        </section> <!-- penutup .grid-lower -->
-  </main>
-</div>
+    // ====== STORAGE ======
+    const STORAGE_KEY = 'circaDashboardDataV1';
+    const RECO_KEY = 'circaRecoLogV1';
 
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    // ====== DEFAULT DATA (14 hari) ======
+    let labels = ['05 Nov','06 Nov','07 Nov','08 Nov','09 Nov','10 Nov','11 Nov','12 Nov','13 Nov','14 Nov','15 Nov','16 Nov','17 Nov','18 Nov'];
+    // Carbon Intensity (kg CO2/MWh)
+    let ciData = [1085, 1078, 1068, 1060, 1048, 1055, 1042, 1036, 1029, 1038, 1046, 1052, 1061, 1060];
+    // CO2 rate (t/h)
+    let co2RateData = [760, 755, 748, 742, 736, 740, 732, 728, 725, 730, 734, 738, 744, 742];
 
-<script>
-  const STORAGE_KEY = 'flyashDashboardDataV1';
-
-  // ====== DATA DEFAULT (kalau belum ada di localStorage) ======
-  let labels = [
-    '05 Nov', '06 Nov', '07 Nov', '08 Nov', '09 Nov', '10 Nov', '11 Nov',
-    '12 Nov', '13 Nov', '14 Nov', '15 Nov', '16 Nov', '17 Nov', '18 Nov'
-  ];
-
-  let produksiData = [
-    880, 895, 910, 905, 920, 930, 915,
-    940, 955, 960, 945, 920, 905, 935
-  ];
-
-  let pemanfaatanData = [
-    72, 73, 74, 75, 76, 77, 76,
-    78, 79, 80, 79, 78, 77, 78
-  ];
-
-  // ====== LOCAL STORAGE UNTUK DATA GRAFIK ======
-  function loadData() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed.labels) ||
-          !Array.isArray(parsed.produksiData) ||
-          !Array.isArray(parsed.pemanfaatanData)) return;
-
-      if (parsed.labels.length !== parsed.produksiData.length ||
-          parsed.labels.length !== parsed.pemanfaatanData.length) return;
-
-      labels = parsed.labels;
-      produksiData = parsed.produksiData;
-      pemanfaatanData = parsed.pemanfaatanData;
-    } catch (e) {
-      console.error('Gagal load dari localStorage', e);
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed.labels) || !Array.isArray(parsed.ciData) || !Array.isArray(parsed.co2RateData)) return;
+        if (parsed.labels.length !== parsed.ciData.length || parsed.labels.length !== parsed.co2RateData.length) return;
+        labels = parsed.labels; ciData = parsed.ciData; co2RateData = parsed.co2RateData;
+      } catch (e) { console.error('Load error', e); }
     }
-  }
 
-  function saveData() {
-    try {
-      const payload = { labels, produksiData, pemanfaatanData };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    } catch (e) {
-      console.error('Gagal simpan ke localStorage', e);
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ labels, ciData, co2RateData }));
+      } catch (e) { console.error('Save error', e); }
     }
-  }
 
-  // Coba load data tersimpan. Kalau gagal, pakai data default.
-  loadData();
+    loadData();
 
-  // ====== INISIALISASI CHART ======
-  const ctx = document.getElementById('flyashChart').getContext('2d');
-
-  const flyashChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Produksi (ton/hari)',
-          data: produksiData,
-          borderWidth: 2,
-          tension: 0.35,
-          pointRadius: 3,
-          yAxisID: 'y',
-        },
-        {
-          label: 'Pemanfaatan (%)',
-          data: pemanfaatanData,
-          borderWidth: 2,
-          borderDash: [6, 4],
-          tension: 0.35,
-          pointRadius: 3,
-          yAxisID: 'y1',
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { mode: 'index', intersect: false }
+    // ====== CHART ======
+    const ctx = document.getElementById('ciChart').getContext('2d');
+    const ciChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Carbon Intensity (kg CO₂/MWh)',
+            data: ciData,
+            borderWidth: 2,
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y',
+          },
+          {
+            label: 'CO₂ Rate (t/h)',
+            data: co2RateData,
+            borderWidth: 2,
+            borderDash: [6, 4],
+            tension: 0.35,
+            pointRadius: 3,
+            yAxisID: 'y1',
+          }
+        ]
       },
-      interaction: { mode: 'index', intersect: false },
-      scales: {
-        y: {
-          type: 'linear',
-          position: 'left',
-          title: { display: true, text: 'Produksi (ton/hari)' },
-          grid: { color: 'rgba(30, 64, 175, 0.35)' }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false }
         },
-        y1: {
-          type: 'linear',
-          position: 'right',
-          title: { display: true, text: 'Pemanfaatan (%)' },
-          min: 60,
-          max: 100,
-          grid: { drawOnChartArea: false }
+        interaction: { mode: 'index', intersect: false },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: { display: true, text: 'Carbon Intensity (kg CO₂/MWh)' },
+            grid: { color: 'rgba(30, 64, 175, 0.35)' }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            title: { display: true, text: 'CO₂ Rate (t/h)' },
+            grid: { drawOnChartArea: false }
+          }
         }
       }
-    }
-  });
-
-  // ====== REFERENSI ELEMEN DOM ======
-  const openInputBtn = document.getElementById('openInputBtn');
-  const inputPanel = document.getElementById('inputPanel');
-  const inputForm = document.getElementById('inputForm');
-  const cancelInputBtn = document.getElementById('cancelInputBtn');
-  const inputDate = document.getElementById('inputDate');
-  const inputProduksi = document.getElementById('inputProduksi');
-  const inputPemanfaatan = document.getElementById('inputPemanfaatan');
-
-  const deleteLastBtn = document.getElementById('deleteLastBtn');
-  const deleteDateSelect = document.getElementById('deleteDateSelect');
-  const deleteByDateBtn = document.getElementById('deleteByDateBtn');
-
-  // ====== FUNGSI BANTUAN UMUM ======
-  function showInputPanel() {
-    inputPanel.style.display = 'block';
-    if (!inputDate.value) {
-      const today = new Date();
-      const y = today.getFullYear();
-      const m = String(today.getMonth() + 1).padStart(2, '0');
-      const d = String(today.getDate()).padStart(2, '0');
-      inputDate.value = `${y}-${m}-${d}`;
-    }
-    inputProduksi.focus();
-  }
-
-  function hideInputPanel() {
-    inputPanel.style.display = 'none';
-  }
-
-  function formatLabelFromDate(isoDate) {
-    if (!isoDate) return 'Custom';
-    const d = new Date(isoDate);
-    if (isNaN(d.getTime())) return isoDate;
-    const day = String(d.getDate()).padStart(2, '0');
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-    return `${day} ${months[d.getMonth()]}`;
-  }
-
-  function updateDeleteDateOptions() {
-    if (!deleteDateSelect) return;
-
-    deleteDateSelect.innerHTML = '';
-
-    if (labels.length === 0) {
-      const opt = document.createElement('option');
-      opt.value = '';
-      opt.textContent = 'Tidak ada data';
-      deleteDateSelect.appendChild(opt);
-      deleteDateSelect.disabled = true;
-      deleteByDateBtn.disabled = true;
-      return;
-    }
-
-    deleteDateSelect.disabled = false;
-    deleteByDateBtn.disabled = false;
-
-    labels.forEach((lbl, idx) => {
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.textContent = `${idx + 1} — ${lbl}`;
-      deleteDateSelect.appendChild(opt);
     });
-  }
 
-  function addDataPoint(label, produksi, pemanfaatan) {
-    labels.push(label);
-    produksiData.push(produksi);
-    pemanfaatanData.push(pemanfaatan);
-
-    const maxPoints = 14;
-    if (labels.length > maxPoints) {
-      labels = labels.slice(-maxPoints);
-      produksiData = produksiData.slice(-maxPoints);
-      pemanfaatanData = pemanfaatanData.slice(-maxPoints);
+    // ====== KPI (dummy live) ======
+    function fmtNum(n, digits=0) {
+      return Number(n).toLocaleString('id-ID', { maximumFractionDigits: digits, minimumFractionDigits: digits });
     }
 
-    flyashChart.data.labels = labels;
-    flyashChart.data.datasets[0].data = produksiData;
-    flyashChart.data.datasets[1].data = pemanfaatanData;
-    flyashChart.update();
-    saveData();
-    updateDeleteDateOptions();
-  }
-// ====== UTILITAS FORMAT TANGGAL & UANG ======
-function formatDateShort(isoDate) {
-  if (!isoDate) return '-';
-  const d = new Date(isoDate);
-  if (isNaN(d.getTime())) return isoDate;
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  return `${day}/${month}`;
-}
-
-function formatIDR(value) {
-  if (typeof value !== 'number') return value;
-  return 'IDR ' + value.toLocaleString('id-ID');
-}
-
-// ====== GENERATE BATCH ID OTOMATIS ======
-function generateBatchId(isoDate) {
-  const d = new Date(isoDate);
-  const yy = String(d.getFullYear()).slice(-2);
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  const rand = Math.floor(Math.random() * 90) + 10; // 2 digit random
-  return `FA-${yy}${mm}${dd}-${rand}`;
-}
-
-// ====== KLASIFIKASI BERDASARKAN SiO2 ======
-function classifyBySiO2(sio2Input) {
-  const val = parseFloat(sio2Input);
-  if (isNaN(val)) {
-    return {
-      grade: '-',
-      rekomendasi: '-',
-      cost: 0,
-      price: 0,
-      margin: 0
-    };
-  }
-
-  let grade, rekomendasi, cost, price;
-
-  if (val >= 50) {
-    grade = 'A';
-    rekomendasi = 'Silika presipitasi';
-    cost = 8000000;
-    price = 17000000;
-  } else if (val >= 40) {
-    grade = 'B';
-    rekomendasi = 'Cement / beton ready-mix';
-    cost = 50000;
-    price = 400000;
-  } else {
-    grade = 'C';
-    rekomendasi = 'Bahan konstruksi';
-    cost = 250000;
-    price = 600000;
-  }
-
-  const margin = price - cost;
-  return { grade, rekomendasi, cost, price, margin };
-}
-
-// ====== DATA BATCH DI MEMORY ======
-let batchList = [];
-
-// ====== RENDER TABEL BATCH ======
-function renderBatchTable() {
-  const tbody = document.getElementById('batchTbody');
-  if (!tbody) return;
-
-  tbody.innerHTML = '';
-
-  if (batchList.length === 0) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = 10;
-    td.textContent = 'Belum ada batch yang diinput.';
-    td.style.textAlign = 'center';
-    td.style.color = '#9ca3af';
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-    return;
-  }
-
-  batchList.forEach(batch => {
-    const tr = document.createElement('tr');
-
-    tr.innerHTML = `
-      <td>${batch.id}</td>
-      <td>${batch.tgl}</td>
-      <td>${batch.unit}</td>
-      <td>${batch.loi}</td>
-      <td>${batch.sio2}</td>
-      <td>${batch.grade}</td>
-      <td>${batch.rekomendasi}</td>
-      <td>${formatIDR(batch.cost)}</td>
-      <td>${formatIDR(batch.price)}</td>
-      <td>${formatIDR(batch.margin)}</td>
-    `;
-
-    tbody.appendChild(tr);
-  });
-}
-
-// ====== FORM BATCH DOM ======
-const batchForm = document.getElementById('batchForm');
-const batchDate = document.getElementById('batchDate');
-const batchUnit = document.getElementById('batchUnit');
-const batchLoi = document.getElementById('batchLoi');
-const batchSio2 = document.getElementById('batchSio2');
-
-// ====== EVENT: TAMBAH BATCH BARU ======
-if (batchForm) {
-  batchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const tanggal = batchDate.value;
-    const unit = batchUnit.value || '-';
-    const loi = batchLoi.value || '-';
-    const sio2 = batchSio2.value;
-
-    if (!tanggal) {
-      alert('Tanggal batch belum diisi.');
-      return;
-    }
-    if (!sio2) {
-      alert('SiO₂ wajib diisi.');
-      return;
+    function setChip(el, type, text){
+      el.className = type;
+      el.textContent = text;
     }
 
-    const { grade, rekomendasi, cost, price, margin } = classifyBySiO2(sio2);
-    const id = generateBatchId(tanggal);
-    const tglDisplay = formatDateShort(tanggal);
+    function renderKPIs(){
+      const lastCI = ciData[ciData.length-1];
+      const lastCO2rate = co2RateData[co2RateData.length-1];
 
-    const newBatch = {
-      id,
-      tgl: tglDisplay,
-      unit,
-      loi,
-      sio2,
-      grade,
-      rekomendasi,
-      cost,
-      price,
-      margin
-    };
+      // Dummy derivation
+      const co2Today = Math.round(lastCO2rate * 24); // ton/day approx if t/h
+      const netLoad = 520; // dummy
+      const aux = 27.4; // dummy
 
-    batchList.push(newBatch);
-    renderBatchTable();
+      document.getElementById('kpiCI').textContent = fmtNum(lastCI);
+      document.getElementById('kpiCO2Today').textContent = fmtNum(co2Today) + ' ton';
+      document.getElementById('kpiNetLoad').textContent = fmtNum(netLoad) + ' MW';
+      document.getElementById('kpiAux').textContent = fmtNum(aux,1) + ' MW';
 
-    batchForm.reset();
-  });
-}
+      const chipCI = document.getElementById('chipCI');
+      if (lastCI <= 1020) setChip(chipCI, 'chip-positive', 'On Track');
+      else if (lastCI <= 1060) setChip(chipCI, 'chip-warning', 'Need tuning');
+      else setChip(chipCI, 'chip-danger', 'High CI');
 
-// Render awal (supaya muncul pesan "Belum ada batch")
-renderBatchTable();
-  // ====== REKOMENDASI BERDASARKAN GRADE BATCH ======
-  
+      const chipCO2 = document.getElementById('chipCO2');
+      chipCO2.textContent = '-4.1% vs baseline';
 
-  
+      const chipAux = document.getElementById('chipAux');
+      if (aux <= 26.5) setChip(chipAux, 'chip-positive', 'Good');
+      else setChip(chipAux, 'chip-warning', 'Optimize');
+    }
+    renderKPIs();
 
-  
+    // ====== INPUT PANEL ======
+    const openInputBtn = document.getElementById('openInputBtn');
+    const inputPanel = document.getElementById('inputPanel');
+    const inputForm = document.getElementById('inputForm');
+    const cancelInputBtn = document.getElementById('cancelInputBtn');
+    const inputDate = document.getElementById('inputDate');
+    const inputCI = document.getElementById('inputCI');
+    const inputCO2Rate = document.getElementById('inputCO2Rate');
 
-  // ====== INISIALISASI UI SETELAH CHART JADI ======
-  updateDeleteDateOptions();
+    function showInputPanel() {
+      inputPanel.style.display = 'block';
+      if (!inputDate.value) {
+        const t = new Date();
+        inputDate.value = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+      }
+      inputCI.focus();
+    }
+    function hideInputPanel(){ inputPanel.style.display = 'none'; }
 
+    function formatLabelFromDate(isoDate) {
+      if (!isoDate) return 'Custom';
+      const d = new Date(isoDate);
+      if (isNaN(d.getTime())) return isoDate;
+      const day = String(d.getDate()).padStart(2, '0');
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      return `${day} ${months[d.getMonth()]}`;
+    }
 
-  // ====== EVENT INPUT DATA MANUAL ======
-  openInputBtn.addEventListener('click', () => {
-    if (inputPanel.style.display === 'block') {
+    function addDataPoint(label, ci, co2rate) {
+      labels.push(label);
+      ciData.push(ci);
+      co2RateData.push(co2rate);
+
+      const maxPoints = 14;
+      if (labels.length > maxPoints) {
+        labels = labels.slice(-maxPoints);
+        ciData = ciData.slice(-maxPoints);
+        co2RateData = co2RateData.slice(-maxPoints);
+      }
+
+      ciChart.data.labels = labels;
+      ciChart.data.datasets[0].data = ciData;
+      ciChart.data.datasets[1].data = co2RateData;
+      ciChart.update();
+      saveData();
+      updateDeleteDateOptions();
+      renderKPIs();
+    }
+
+    openInputBtn.addEventListener('click', () => {
+      if (inputPanel.style.display === 'block') hideInputPanel();
+      else showInputPanel();
+    });
+
+    cancelInputBtn.addEventListener('click', hideInputPanel);
+
+    inputForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tanggal = inputDate.value;
+      const ci = parseFloat(inputCI.value);
+      const co2rate = parseFloat(inputCO2Rate.value);
+
+      if (isNaN(ci) || isNaN(co2rate)) {
+        alert('Mohon isi angka yang valid untuk CI dan CO₂ rate.');
+        return;
+      }
+      addDataPoint(formatLabelFromDate(tanggal), ci, co2rate);
+      inputForm.reset();
       hideInputPanel();
-    } else {
-      showInputPanel();
+    });
+
+    // ====== DELETE / UNDO ======
+    const deleteLastBtn = document.getElementById('deleteLastBtn');
+    const deleteDateSelect = document.getElementById('deleteDateSelect');
+    const deleteByDateBtn = document.getElementById('deleteByDateBtn');
+
+    function updateDeleteDateOptions() {
+      deleteDateSelect.innerHTML = '';
+      if (labels.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'Tidak ada data';
+        deleteDateSelect.appendChild(opt);
+        deleteDateSelect.disabled = true;
+        deleteByDateBtn.disabled = true;
+        return;
+      }
+      deleteDateSelect.disabled = false;
+      deleteByDateBtn.disabled = false;
+      labels.forEach((lbl, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${idx + 1} — ${lbl}`;
+        deleteDateSelect.appendChild(opt);
+      });
     }
-  });
-
-  cancelInputBtn.addEventListener('click', () => {
-    hideInputPanel();
-  });
-
-  inputForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const tanggal = inputDate.value;
-    const produksi = parseFloat(inputProduksi.value);
-    const pemanfaatan = parseFloat(inputPemanfaatan.value);
-
-    if (isNaN(produksi) || isNaN(pemanfaatan)) {
-      alert('Mohon isi angka yang valid untuk produksi dan pemanfaatan.');
-      return;
-    }
-
-    const label = formatLabelFromDate(tanggal);
-    addDataPoint(label, produksi, pemanfaatan);
-
-    inputForm.reset();
-    hideInputPanel();
-  });
-
-  // ====== HAPUS DATA TERAKHIR (UNDO) ======
-  deleteLastBtn.addEventListener('click', () => {
-    if (labels.length === 0) {
-      alert("Tidak ada data untuk dihapus.");
-      return;
-    }
-
-    labels.pop();
-    produksiData.pop();
-    pemanfaatanData.pop();
-
-    flyashChart.data.labels = labels;
-    flyashChart.data.datasets[0].data = produksiData;
-    flyashChart.data.datasets[1].data = pemanfaatanData;
-    flyashChart.update();
-    saveData();
     updateDeleteDateOptions();
-  });
 
-  // ====== HAPUS DATA BERDASARKAN TANGGAL (DARI DROPDOWN) ======
-  deleteByDateBtn.addEventListener('click', () => {
-    const idx = parseInt(deleteDateSelect.value, 10);
-    if (isNaN(idx)) {
-      alert('Tidak ada data yang bisa dihapus.');
-      return;
+    deleteLastBtn.addEventListener('click', () => {
+      if (labels.length === 0) { alert("Tidak ada data untuk dihapus."); return; }
+      labels.pop(); ciData.pop(); co2RateData.pop();
+      ciChart.data.labels = labels;
+      ciChart.data.datasets[0].data = ciData;
+      ciChart.data.datasets[1].data = co2RateData;
+      ciChart.update();
+      saveData();
+      updateDeleteDateOptions();
+      renderKPIs();
+    });
+
+    deleteByDateBtn.addEventListener('click', () => {
+      const idx = parseInt(deleteDateSelect.value, 10);
+      if (isNaN(idx)) { alert('Tidak ada data yang bisa dihapus.'); return; }
+      labels.splice(idx, 1);
+      ciData.splice(idx, 1);
+      co2RateData.splice(idx, 1);
+
+      ciChart.data.labels = labels;
+      ciChart.data.datasets[0].data = ciData;
+      ciChart.data.datasets[1].data = co2RateData;
+      ciChart.update();
+      saveData();
+      updateDeleteDateOptions();
+      renderKPIs();
+    });
+
+    // ====== RECOMMENDATION LOG ======
+    let recoList = [];
+    function loadReco(){
+      try{
+        const raw = localStorage.getItem(RECO_KEY);
+        if(!raw) return;
+        const parsed = JSON.parse(raw);
+        if(Array.isArray(parsed)) recoList = parsed;
+      }catch(e){ console.error(e); }
+    }
+    function saveReco(){
+      try{ localStorage.setItem(RECO_KEY, JSON.stringify(recoList)); }
+      catch(e){ console.error(e); }
+    }
+    function statusBadge(status){
+      if(status === 'applied') return '<span class="badge-ok">Applied</span>';
+      if(status === 'hold') return '<span class="badge-risk">Hold</span>';
+      return '<span class="badge-warn">Recommended</span>';
+    }
+    function renderReco(){
+      const tbody = document.getElementById('recoTbody');
+      tbody.innerHTML = '';
+      if(recoList.length === 0){
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 4;
+        td.textContent = 'Belum ada log rekomendasi.';
+        td.style.textAlign = 'center';
+        td.style.color = '#9ca3af';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+      recoList.slice().reverse().forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.tgl}</td>
+          <td>${item.text}</td>
+          <td>${item.impact}</td>
+          <td>${statusBadge(item.status)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
-    labels.splice(idx, 1);
-    produksiData.splice(idx, 1);
-    pemanfaatanData.splice(idx, 1);
+    loadReco();
 
-    flyashChart.data.labels = labels;
-    flyashChart.data.datasets[0].data = produksiData;
-    flyashChart.data.datasets[1].data = pemanfaatanData;
-    flyashChart.update();
-    saveData();
-    updateDeleteDateOptions();
-  });
-</script>
+    // seed dummy if empty
+    if(recoList.length === 0){
+      recoList = [
+        { tgl:'18/11', text:'Turunkan O₂ stack ke 3.5% (jaga CO & stability).', impact:'-6.0', status:'recommended' },
+        { tgl:'17/11', text:'Kurangi MS spray 1.0 t/h pada beban stabil.', impact:'-4.0', status:'applied' },
+        { tgl:'16/11', text:'Optimasi vacuum +0.5 kPa (cek CW flow & fouling).', impact:'-3.0', status:'hold' },
+      ];
+      saveReco();
+    }
+    renderReco();
+
+    const recoForm = document.getElementById('recoForm');
+    const recoDate = document.getElementById('recoDate');
+    const recoImpact = document.getElementById('recoImpact');
+    const recoStatus = document.getElementById('recoStatus');
+    const recoText = document.getElementById('recoText');
+
+    function formatDateShort(isoDate) {
+      if (!isoDate) return '-';
+      const d = new Date(isoDate);
+      if (isNaN(d.getTime())) return isoDate;
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      return `${day}/${month}`;
+    }
+
+    if(recoForm){
+      recoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const tgl = formatDateShort(recoDate.value);
+        const impact = parseFloat(recoImpact.value);
+        const status = recoStatus.value;
+        const text = (recoText.value || '').trim();
+
+        if(!recoDate.value || !text || isNaN(impact)){
+          alert('Lengkapi tanggal, impact, dan rekomendasi.');
+          return;
+        }
+
+        recoList.push({ tgl, text, impact: (impact>0?'+':'') + impact.toFixed(1), status });
+        saveReco();
+        renderReco();
+        recoForm.reset();
+      });
+    }
+  </script>
 </body>
 </html>
-
